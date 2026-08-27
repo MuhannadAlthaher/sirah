@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sira/l10n/app_localizations.dart';
 import 'package:sira/onboarding/onboarding_card_sizes.dart';
 import 'package:sira/theme/app_palette.dart';
 
@@ -18,25 +19,27 @@ class BeforeAfterPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _ComparisonBox(
           sizes: sizes,
-          label: 'BEFORE',
+          label: l10n.onboardingBeforeLabel,
           text: before,
-          background: AppPalette.previewBackground,
+          background: context.palette.previewBackground,
           borderColor: Colors.transparent,
-          labelColor: Colors.black45,
+          labelColor: context.palette.textMuted,
         ),
         SizedBox(height: sizes.previewGap),
         _ComparisonBox(
           sizes: sizes,
-          label: 'AFTER',
+          label: l10n.onboardingAfterLabel,
           text: after,
-          background: AppPalette.scanRowBackground,
-          borderColor: AppPalette.accent,
-          labelColor: AppPalette.accent,
+          background: context.palette.scanRowBackground,
+          borderColor: context.palette.accent,
+          labelColor: context.palette.accent,
         ),
       ],
     );

@@ -19,7 +19,7 @@ class PositionBadge extends StatelessWidget {
         vertical: width * 0.012,
       ),
       decoration: BoxDecoration(
-        color: AppPalette.accentSoft,
+        color: context.palette.accentSoft,
         borderRadius: BorderRadius.circular(width * 0.05),
       ),
       child: Row(
@@ -28,13 +28,13 @@ class PositionBadge extends StatelessWidget {
           Icon(
             Icons.work_outline,
             size: width * 0.035,
-            color: AppPalette.accent,
+            color: context.palette.accent,
           ),
           SizedBox(width: width * 0.015),
           Text(
             position,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: AppPalette.accent,
+              color: context.palette.accent,
               fontWeight: FontWeight.w600,
             ),
           ),

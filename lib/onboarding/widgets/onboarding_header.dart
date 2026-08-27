@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sira/l10n/app_localizations.dart';
 import 'package:sira/theme/app_palette.dart';
 
 /// Top navigation row for the onboarding flow: a brand logo mark,
@@ -13,6 +14,8 @@ class OnboardingHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
@@ -27,13 +30,13 @@ class OnboardingHeader extends StatelessWidget {
               padding: EdgeInsets.all(logoSize * 0.22),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppPalette.accent,
+                  color: context.palette.accent,
                   width: logoSize * 0.02,
                 ),
                 borderRadius: BorderRadius.circular(logoSize * 0.28),
               ),
               child: FittedBox(
-                child: Icon(Icons.edit_document, color: AppPalette.accent),
+                child: Icon(Icons.edit_document, color: context.palette.accent),
               ),
             ),
             SizedBox(width: spacing),
@@ -41,13 +44,13 @@ class OnboardingHeader extends StatelessWidget {
               TextSpan(
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: context.palette.textPrimary,
                 ),
                 children: [
-                  const TextSpan(text: 'Resume'),
+                  TextSpan(text: l10n.brandLead),
                   TextSpan(
-                    text: 'AI',
-                    style: TextStyle(color: AppPalette.accent),
+                    text: l10n.brandAccent,
+                    style: TextStyle(color: context.palette.accent),
                   ),
                 ],
               ),
@@ -56,10 +59,10 @@ class OnboardingHeader extends StatelessWidget {
             TextButton(
               onPressed: onSkip,
               child: Text(
-                'Skip',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(color: Colors.grey.shade600),
+                l10n.skip,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: context.palette.textSecondary,
+                ),
               ),
             ),
           ],

@@ -8,7 +8,9 @@ plugins {
 android {
     namespace = "com.example.sira"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // image_picker_android and flutter_plugin_android_lifecycle both
+    // need this NDK version specifically; Flutter's default lags behind.
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

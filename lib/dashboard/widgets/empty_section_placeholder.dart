@@ -28,8 +28,8 @@ class EmptySectionPlaceholder extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.all(padding),
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: AppPalette.border),
+            color: context.palette.surface,
+            border: Border.all(color: context.palette.border),
             borderRadius: BorderRadius.circular(padding * 0.6),
           ),
           child: Column(
@@ -45,9 +45,9 @@ class EmptySectionPlaceholder extends StatelessWidget {
               SizedBox(height: padding * 0.3),
               Text(
                 message,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: Colors.black54),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: context.palette.textSecondary,
+                ),
               ),
             ],
           ),

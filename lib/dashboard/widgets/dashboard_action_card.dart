@@ -33,7 +33,7 @@ class DashboardActionCard extends StatelessWidget {
         final radius = width * 0.08;
 
         return Material(
-          color: Colors.white,
+          color: context.palette.surface,
           borderRadius: BorderRadius.circular(radius),
           child: InkWell(
             borderRadius: BorderRadius.circular(radius),
@@ -42,7 +42,7 @@ class DashboardActionCard extends StatelessWidget {
               width: double.infinity,
               padding: EdgeInsets.all(padding),
               decoration: BoxDecoration(
-                border: Border.all(color: AppPalette.border),
+                border: Border.all(color: context.palette.border),
                 borderRadius: BorderRadius.circular(radius),
               ),
               child: Column(
@@ -53,13 +53,13 @@ class DashboardActionCard extends StatelessWidget {
                     width: iconSize,
                     height: iconSize,
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppPalette.accentSoft,
+                      color: context.palette.accentSoft,
                     ),
                     child: Icon(
                       icon,
-                      color: AppPalette.accent,
+                      color: context.palette.accent,
                       size: iconSize * 0.55,
                     ),
                   ),
@@ -68,9 +68,9 @@ class DashboardActionCard extends StatelessWidget {
                     title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(color: Colors.black54),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: context.palette.textSecondary,
+                    ),
                   ),
                   SizedBox(height: padding * 0.2),
                   Text(

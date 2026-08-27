@@ -15,13 +15,13 @@ class CvThumbnail extends StatelessWidget {
       height: size * 1.3,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: AppPalette.accentSoft,
+        color: context.palette.accentSoft,
         borderRadius: BorderRadius.circular(size * 0.15),
-        border: Border.all(color: AppPalette.border),
+        border: Border.all(color: context.palette.border),
       ),
       child: Icon(
         Icons.description_outlined,
-        color: AppPalette.accent,
+        color: context.palette.accent,
         size: size * 0.5,
       ),
     );

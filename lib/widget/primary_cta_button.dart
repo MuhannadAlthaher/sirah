@@ -30,8 +30,8 @@ class PrimaryCtaButton extends StatelessWidget {
           child: ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppPalette.accent,
-              foregroundColor: Colors.white,
+              backgroundColor: context.palette.accent,
+              foregroundColor: context.palette.onAccent,
               padding: EdgeInsets.symmetric(vertical: width * 0.045),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(width * 0.1),
@@ -40,15 +40,19 @@ class PrimaryCtaButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  label,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                Flexible(
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: context.palette.onAccent,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 SizedBox(width: width * 0.02),
-                Icon(icon, color: Colors.white),
+                Icon(icon, color: context.palette.onAccent),
               ],
             ),
           ),

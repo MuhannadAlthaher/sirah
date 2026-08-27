@@ -29,9 +29,9 @@ class OnboardingFeatureCard extends StatelessWidget {
 
         return Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.palette.surface,
             border: Border.all(
-              color: AppPalette.border,
+              color: context.palette.border,
               width: sizes.cardBorderWidth,
             ),
             borderRadius: BorderRadius.circular(sizes.cardRadius),
@@ -47,9 +47,9 @@ class OnboardingFeatureCard extends StatelessWidget {
                 child: Container(
                   width: sizes.blobSize,
                   height: sizes.blobSize,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppPalette.blob,
+                    color: context.palette.blob,
                   ),
                 ),
               ),
@@ -67,11 +67,11 @@ class OnboardingFeatureCard extends StatelessWidget {
                           height: sizes.iconSize,
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(sizes.iconPadding),
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppPalette.accentSoft,
+                            color: context.palette.accentSoft,
                           ),
-                          child: Icon(icon, color: AppPalette.accent),
+                          child: Icon(icon, color: context.palette.accent),
                         ),
                       ),
                     ),

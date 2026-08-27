@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sira/dashboard/dashboard_demo_data.dart';
+import 'package:sira/data/demo_data.dart';
+import 'package:sira/l10n/app_localizations.dart';
 import 'package:sira/theme/app_palette.dart';
 
 /// A placeholder preview of a single CV, opened from [CvCard]. Demo
@@ -12,12 +13,14 @@ class CvViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
-      backgroundColor: AppPalette.screenBackground,
+      backgroundColor: context.palette.screenBackground,
       appBar: AppBar(
-        backgroundColor: AppPalette.screenBackground,
+        backgroundColor: context.palette.screenBackground,
         elevation: 0,
-        foregroundColor: Colors.black87,
+        foregroundColor: context.palette.textPrimary,
         title: Text(cv.name),
       ),
       body: SafeArea(
@@ -35,9 +38,9 @@ class CvViewPage extends StatelessWidget {
                     width: double.infinity,
                     padding: EdgeInsets.all(padding),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: context.palette.surface,
                       borderRadius: BorderRadius.circular(padding * 0.5),
-                      border: Border.all(color: AppPalette.border),
+                      border: Border.all(color: context.palette.border),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -46,7 +49,7 @@ class CvViewPage extends StatelessWidget {
                         Icon(
                           Icons.description_outlined,
                           size: width * 0.15,
-                          color: AppPalette.accent,
+                          color: context.palette.accent,
                         ),
                         SizedBox(height: padding * 0.6),
                         Text(
@@ -62,10 +65,9 @@ class CvViewPage extends StatelessWidget {
                         ),
                         SizedBox(height: padding),
                         Text(
-                          'This is a placeholder preview — the full CV '
-                          'will render here once the builder is connected.',
+                          l10n.cvPreviewPlaceholder,
                           style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(color: Colors.black54),
+                              ?.copyWith(color: context.palette.textSecondary),
                         ),
                       ],
                     ),

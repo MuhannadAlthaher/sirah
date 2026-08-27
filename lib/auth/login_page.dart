@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sira/dashboard/dashboard_page.dart';
+import 'package:sira/l10n/app_localizations.dart';
+import 'package:sira/shell/app_shell.dart';
 import 'package:sira/theme/app_palette.dart';
 import 'package:sira/widget/social_login_button.dart';
 
@@ -15,8 +16,10 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: context.palette.surface,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -44,37 +47,35 @@ class LoginPage extends StatelessWidget {
                       width: width * 0.22,
                       height: width * 0.22,
                       alignment: Alignment.center,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppPalette.accentSoft,
+                        color: context.palette.accentSoft,
                       ),
                       child: Icon(
                         Icons.description_outlined,
-                        color: AppPalette.accent,
+                        color: context.palette.accent,
                         size: width * 0.11,
                       ),
                     ),
                     SizedBox(height: padding),
                     Text(
-                      'Build a resume that gets you hired',
+                      l10n.loginTitle,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.headlineSmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: padding * 0.5),
                     Text(
-                      'Sign in to save your CV, access it on any device, and '
-                      'unlock AI rewriting, ATS scoring, and premium '
-                      'templates.',
+                      l10n.loginDescription,
                       textAlign: TextAlign.center,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(color: Colors.black54),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: context.palette.textSecondary,
+                      ),
                     ),
                     SizedBox(height: padding * 1.6),
                     SocialLoginButton(
                       icon: Icons.apple,
-                      label: 'Continue with Apple',
+                      label: l10n.continueWithApple,
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white,
                       onPressed: () {},
@@ -82,38 +83,38 @@ class LoginPage extends StatelessWidget {
                     SizedBox(height: padding * 0.5),
                     SocialLoginButton(
                       icon: Icons.g_mobiledata,
-                      label: 'Continue with Google',
+                      label: l10n.continueWithGoogle,
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black87,
-                      borderColor: AppPalette.border,
+                      borderColor: context.palette.border,
                       onPressed: () {},
                     ),
                     SizedBox(height: padding * 0.5),
                     SocialLoginButton(
                       icon: Icons.email_outlined,
-                      label: 'Continue with Email',
+                      label: l10n.continueWithEmail,
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black87,
-                      borderColor: AppPalette.border,
+                      borderColor: context.palette.border,
                       onPressed: () {},
                     ),
                     SizedBox(height: padding * 0.5),
                     SocialLoginButton(
                       icon: Icons.phone_outlined,
-                      label: 'Continue with Phone Number',
+                      label: l10n.continueWithPhoneNumber,
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black87,
-                      borderColor: AppPalette.border,
-                      onPressed: () => _openDashboard(context),
+                      borderColor: context.palette.border,
+                      onPressed: () => _openApp(context),
                     ),
                     SizedBox(height: padding * 0.8),
                     TextButton(
                       onPressed: onGuestContinue,
                       child: Text(
-                        'Continue as Guest',
+                        l10n.continueAsGuest,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
-                              color: Colors.grey.shade600,
+                              color: context.palette.textSecondary,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -128,9 +129,10 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  void _openDashboard(BuildContext context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => DashboardPage()));
+  void _openApp(BuildContext context) {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const AppShell()),
+      (route) => false,
+    );
   }
 }

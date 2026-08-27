@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:sira/onboarding/onboarding_slide_data.dart';
 import 'package:sira/onboarding/widgets/feature_checklist.dart';
 import 'package:sira/onboarding/widgets/onboarding_feature_card.dart';
+import 'package:sira/theme/app_palette.dart';
 
-/// Shared layout template for a single onboarding slide: a white,
-/// bordered card holding the feature card, headline, description, and
-/// checklist. Every slide reuses this template with its own
-/// [OnboardingSlideData]; the white card is what visually separates
-/// one slide from the next against the screen's gray background.
+/// Shared layout template for a single onboarding slide: a bordered
+/// card (on [AppPalette.surface]) holding the feature card, headline,
+/// description, and checklist. Every slide reuses this template with
+/// its own [OnboardingSlideData]; the card is what visually separates
+/// one slide from the next against the screen's background.
 ///
 /// The slide is laid out once at a capped [_referenceWidth], then the
 /// whole thing is scaled with [FittedBox] to fit whatever space the
@@ -38,9 +39,9 @@ class OnboardingSlideView extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.all(cardPadding),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.palette.surface,
               border: Border.all(
-                color: Colors.white,
+                color: context.palette.surface,
                 width: cardPadding * 0.08,
               ),
               borderRadius: BorderRadius.circular(cardPadding),
@@ -70,9 +71,9 @@ class OnboardingSlideView extends StatelessWidget {
                 SizedBox(height: textGap),
                 Text(
                   data.description,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyLarge?.copyWith(color: Colors.black54),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: context.palette.textSecondary,
+                  ),
                 ),
                 SizedBox(height: listGap),
                 FeatureChecklist(items: data.bullets),

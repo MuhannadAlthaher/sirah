@@ -17,7 +17,7 @@ class AtsScanPreview extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(sizes.previewPadding),
       decoration: BoxDecoration(
-        color: AppPalette.previewBackground,
+        color: context.palette.previewBackground,
         borderRadius: BorderRadius.circular(sizes.previewRadius),
         boxShadow: [
           BoxShadow(
@@ -33,7 +33,7 @@ class AtsScanPreview extends StatelessWidget {
           PlaceholderBar(
             widthFactor: 0.5,
             height: sizes.titleBarHeight,
-            color: AppPalette.titleBar,
+            color: context.palette.titleBar,
           ),
           SizedBox(height: sizes.previewGap),
           PlaceholderBar(widthFactor: 1, height: sizes.barHeight),

@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Lets image_picker's "Take Photo" option launch the camera. -->
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:label="sira"
         android:name="${applicationName}"

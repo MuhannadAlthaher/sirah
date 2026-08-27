@@ -37,7 +37,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     Emitter<OnboardingState> emit,
   ) {
     pageController.animateToPage(
-      onboardingSlides.length - 1,
+      onboardingSlideCount - 1,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );

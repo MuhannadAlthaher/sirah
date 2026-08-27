@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sira/dashboard/cv_view_page.dart';
-import 'package:sira/dashboard/dashboard_demo_data.dart';
-import 'package:sira/dashboard/widgets/cv_action_button.dart';
-import 'package:sira/dashboard/widgets/cv_thumbnail.dart';
+import 'package:sira/data/demo_data.dart';
+import 'package:sira/dashboard/widgets/cv_overflow_menu.dart';
 import 'package:sira/theme/app_palette.dart';
 
-/// One CV entry: thumbnail, name + subtitle, and Edit/Preview/
-/// Download/Share actions. Tapping the card (outside the action row)
-/// opens the same preview as the Preview action.
+/// One CV tile in the CVs grid: icon on top, name and last-edited
+/// label at the bottom, with a "⋮" menu (Edit/Preview/Download/
+/// Share) on the bottom-right. Tapping the tile itself (outside the
+/// menu) opens the same preview as the menu's Preview action.
 ///
 /// Purely presentational: [onEdit], [onDownload], and [onShare] are
 /// supplied by the caller (typically dispatching a Bloc event) rather
@@ -31,12 +31,12 @@ class CvCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final padding = width * 0.04;
-    final thumbSize = width * 0.13;
-    final radius = width * 0.04;
+    final padding = width * 0.08;
+    final iconBoxSize = width * 0.34;
+    final radius = width * 0.08;
 
     return Material(
-      color: Colors.white,
+      color: context.palette.surface,
       borderRadius: BorderRadius.circular(radius),
       child: InkWell(
         borderRadius: BorderRadius.circular(radius),
@@ -44,75 +44,57 @@ class CvCard extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(padding),
           decoration: BoxDecoration(
-            border: Border.all(color: AppPalette.border),
+            border: Border.all(color: context.palette.border),
             borderRadius: BorderRadius.circular(radius),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CvThumbnail(size: thumbSize),
-                  SizedBox(width: padding * 0.8),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          cv.name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(height: padding * 0.2),
-                        Text(
-                          cv.subtitle,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: Colors.black54),
-                        ),
-                      ],
-                    ),
+              Center(
+                child: Container(
+                  width: iconBoxSize,
+                  height: iconBoxSize,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: context.palette.accentSoft,
+                    borderRadius: BorderRadius.circular(iconBoxSize * 0.25),
                   ),
-                ],
+                  child: Icon(
+                    Icons.description_outlined,
+                    color: context.palette.accent,
+                    size: iconBoxSize * 0.5,
+                  ),
+                ),
               ),
-              SizedBox(height: padding * 0.6),
+              SizedBox(height: padding * 0.9),
+              Text(
+                cv.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              SizedBox(height: padding * 0.4),
               Row(
                 children: [
                   Expanded(
-                    child: CvActionButton(
-                      icon: Icons.edit_outlined,
-                      label: 'Edit',
-                      width: width,
-                      onTap: onEdit,
+                    child: Text(
+                      cv.subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: context.palette.textSecondary,
+                      ),
                     ),
                   ),
-                  Expanded(
-                    child: CvActionButton(
-                      icon: Icons.visibility_outlined,
-                      label: 'Preview',
-                      width: width,
-                      onTap: () => _openPreview(context),
-                    ),
-                  ),
-                  Expanded(
-                    child: CvActionButton(
-                      icon: Icons.download_outlined,
-                      label: 'Download',
-                      width: width,
-                      onTap: onDownload,
-                    ),
-                  ),
-                  Expanded(
-                    child: CvActionButton(
-                      icon: Icons.share_outlined,
-                      label: 'Share',
-                      width: width,
-                      onTap: onShare,
-                    ),
+                  CvOverflowMenuButton(
+                    width: width,
+                    onEdit: onEdit,
+                    onPreview: () => _openPreview(context),
+                    onDownload: onDownload,
+                    onShare: onShare,
                   ),
                 ],
               ),

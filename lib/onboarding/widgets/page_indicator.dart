@@ -34,8 +34,8 @@ class PageIndicator extends StatelessWidget {
                 height: dotHeight,
                 decoration: BoxDecoration(
                   color: i == currentIndex
-                      ? AppPalette.accent
-                      : AppPalette.placeholder,
+                      ? context.palette.accent
+                      : context.palette.placeholder,
                   borderRadius: BorderRadius.circular(dotHeight),
                 ),
               ),

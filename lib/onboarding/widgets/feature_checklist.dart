@@ -30,14 +30,14 @@ class FeatureChecklist extends StatelessWidget {
                     width: iconSize,
                     height: iconSize,
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppPalette.accentSoft,
+                      color: context.palette.accentSoft,
                     ),
                     child: Icon(
                       Icons.check,
                       size: iconSize * 0.6,
-                      color: AppPalette.accent,
+                      color: context.palette.accent,
                     ),
                   ),
                   SizedBox(width: gap),

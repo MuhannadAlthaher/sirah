@@ -24,7 +24,7 @@ class ActionPillsPreview extends StatelessWidget {
     // row down instead of clipping or erroring.
     return FittedBox(
       fit: BoxFit.scaleDown,
-      alignment: Alignment.centerLeft,
+      alignment: AlignmentDirectional.centerStart,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -53,9 +53,11 @@ class _Pill extends StatelessWidget {
         vertical: sizes.previewGap * 0.35,
       ),
       decoration: BoxDecoration(
-        color: active ? AppPalette.scanRowBackground : Colors.white,
+        color: active
+            ? context.palette.scanRowBackground
+            : context.palette.surface,
         border: Border.all(
-          color: active ? AppPalette.accent : AppPalette.border,
+          color: active ? context.palette.accent : context.palette.border,
           width: sizes.scanRowBorderWidth,
         ),
         borderRadius: BorderRadius.circular(sizes.scanRowRadius),

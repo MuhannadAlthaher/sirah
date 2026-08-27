@@ -7,12 +7,12 @@ class PlaceholderBar extends StatelessWidget {
     super.key,
     required this.widthFactor,
     required this.height,
-    this.color = AppPalette.placeholder,
+    this.color,
   });
 
   final double widthFactor;
   final double height;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class PlaceholderBar extends StatelessWidget {
       child: Container(
         height: height,
         decoration: BoxDecoration(
-          color: color,
+          color: color ?? context.palette.placeholder,
           borderRadius: BorderRadius.circular(height / 2),
         ),
       ),

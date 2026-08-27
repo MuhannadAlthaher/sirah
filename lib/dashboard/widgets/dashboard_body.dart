@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sira/dashboard/bloc/dashboard_bloc.dart';
 import 'package:sira/dashboard/bloc/dashboard_state.dart';
-import 'package:sira/dashboard/dashboard_demo_data.dart';
+import 'package:sira/data/demo_data.dart';
 import 'package:sira/dashboard/widgets/dashboard_cover_letters_section.dart';
+import 'package:sira/dashboard/widgets/dashboard_cv_draft_banner.dart';
 import 'package:sira/dashboard/widgets/dashboard_cvs_section.dart';
 import 'package:sira/dashboard/widgets/dashboard_profile_header.dart';
 import 'package:sira/dashboard/widgets/dashboard_quick_actions_section.dart';
@@ -44,6 +45,7 @@ class DashboardBody extends StatelessWidget {
                         DashboardProfileHeader(user: user, width: width),
                   ),
                   SizedBox(height: padding * 1.4),
+                  DashboardCvDraftBanner(width: width),
                   DashboardQuickActionsSection(width: width),
                   SizedBox(height: padding * 1.4),
                   DashboardCvsSection(width: width),

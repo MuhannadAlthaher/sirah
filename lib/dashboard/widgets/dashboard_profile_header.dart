@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sira/dashboard/dashboard_demo_data.dart';
-import 'package:sira/dashboard/widgets/position_badge.dart';
-import 'package:sira/dashboard/widgets/profile_avatar.dart';
+import 'package:sira/data/demo_data.dart';
+import 'package:sira/widget/position_badge.dart';
+import 'package:sira/widget/profile_avatar.dart';
 
 /// The dashboard's top section: profile picture, name, and a badge
 /// showing the user's position — all sized off [width] so it scales

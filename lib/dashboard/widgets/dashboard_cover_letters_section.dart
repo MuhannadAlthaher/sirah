@@ -6,6 +6,7 @@ import 'package:sira/dashboard/bloc/dashboard_state.dart';
 import 'package:sira/dashboard/widgets/collapsible_section_header.dart';
 import 'package:sira/dashboard/widgets/empty_section_placeholder.dart';
 import 'package:sira/dashboard/widgets/expand_collapse.dart';
+import 'package:sira/l10n/app_localizations.dart';
 
 /// The collapsible "My Cover Letters" section. There's no cover
 /// letter feature yet, so the expanded state is an honest empty
@@ -18,6 +19,7 @@ class DashboardCoverLettersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final padding = width * 0.05;
+    final l10n = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +27,7 @@ class DashboardCoverLettersSection extends StatelessWidget {
         BlocSelector<DashboardBloc, DashboardState, bool>(
           selector: (state) => state.coverLettersExpanded,
           builder: (context, expanded) => CollapsibleSectionHeader(
-            title: 'My Cover Letters',
+            title: l10n.myCoverLetters,
             expanded: expanded,
             onToggle: () => context.read<DashboardBloc>().add(
               const DashboardCoverLettersSectionToggled(),
@@ -38,9 +40,9 @@ class DashboardCoverLettersSection extends StatelessWidget {
             expanded: expanded,
             child: Padding(
               padding: EdgeInsets.only(top: padding * 0.6),
-              child: const EmptySectionPlaceholder(
-                title: 'No cover letters yet',
-                message: 'Create one from Quick Actions to pair with your CV.',
+              child: EmptySectionPlaceholder(
+                title: l10n.noCoverLettersYet,
+                message: l10n.coverLettersEmptyMessage,
               ),
             ),
           ),

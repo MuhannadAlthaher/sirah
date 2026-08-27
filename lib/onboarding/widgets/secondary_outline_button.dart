@@ -27,8 +27,8 @@ class SecondaryOutlineButton extends StatelessWidget {
           child: OutlinedButton(
             onPressed: onPressed,
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.black87,
-              side: const BorderSide(color: AppPalette.border),
+              foregroundColor: context.palette.textPrimary,
+              side: BorderSide(color: context.palette.border),
               padding: EdgeInsets.symmetric(vertical: width * 0.045),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(width * 0.1),

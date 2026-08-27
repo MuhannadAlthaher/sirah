@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sira/l10n/app_localizations.dart';
 import 'package:sira/onboarding/onboarding_card_sizes.dart';
 import 'package:sira/theme/app_palette.dart';
 
@@ -11,6 +12,8 @@ class AtsScanHighlightRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -22,36 +25,36 @@ class AtsScanHighlightRow extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             border: Border.all(
-              color: AppPalette.accent,
+              color: context.palette.accent,
               width: sizes.scanRowBorderWidth,
             ),
             borderRadius: BorderRadius.circular(sizes.scanRowRadius),
-            color: AppPalette.scanRowBackground,
+            color: context.palette.scanRowBackground,
           ),
           child: Container(
             height: sizes.scanRowInnerBarHeight,
             decoration: BoxDecoration(
-              color: AppPalette.scanRowInnerBar,
+              color: context.palette.scanRowInnerBar,
               borderRadius: BorderRadius.circular(sizes.scanRowInnerBarRadius),
             ),
           ),
         ),
-        Positioned(
+        PositionedDirectional(
           top: -sizes.badgeOffset,
-          right: 0,
+          end: 0,
           child: Container(
             padding: EdgeInsets.symmetric(
               horizontal: sizes.badgePaddingH,
               vertical: sizes.badgePaddingV,
             ),
             decoration: BoxDecoration(
-              color: AppPalette.accent,
+              color: context.palette.accent,
               borderRadius: BorderRadius.circular(sizes.badgeRadius),
             ),
             child: Text(
-              'ATS SCAN',
+              l10n.onboardingAtsScan,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: Colors.white,
+                color: context.palette.onAccent,
                 fontWeight: FontWeight.bold,
               ),
             ),
