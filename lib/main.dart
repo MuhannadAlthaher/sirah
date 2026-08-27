@@ -6,7 +6,7 @@ import 'package:flutter_quill/flutter_quill.dart'
 import 'package:sira/l10n/app_localizations.dart';
 import 'package:sira/l10n/bloc/app_locale_bloc.dart';
 import 'package:sira/l10n/bloc/app_locale_state.dart';
-import 'package:sira/onboarding/onboarding.dart';
+import 'package:sira/splash/splash_screen.dart';
 import 'package:sira/theme/app_theme.dart';
 import 'package:sira/theme/bloc/theme_bloc.dart';
 import 'package:sira/theme/bloc/theme_state.dart';
@@ -58,7 +58,7 @@ class MainApp extends StatelessWidget {
                 localeListResolutionCallback:
                     (deviceLocales, supportedLocales) =>
                         _resolveDeviceLocale(deviceLocales),
-                home: const Onboarding(),
+                home: const SplashScreen(),
               );
             },
           );

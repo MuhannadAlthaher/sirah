@@ -24,6 +24,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on<DashboardCvDraftResumed>(_onCvDraftResumed);
     on<DashboardCvDraftDiscarded>(_onCvDraftDiscarded);
     on<DashboardCvCompleted>(_onCvCompleted);
+    on<DashboardCvUpdated>(_onCvUpdated);
+    on<DashboardCvDeleted>(_onCvDeleted);
   }
 
   final AppLocalizations _l10n;
@@ -82,5 +84,27 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     Emitter<DashboardState> emit,
   ) {
     emit(state.copyWith(cvs: [event.cv, ...state.cvs], clearCvDraft: true));
+  }
+
+  void _onCvUpdated(DashboardCvUpdated event, Emitter<DashboardState> emit) {
+    emit(
+      state.copyWith(
+        cvs: [
+          for (final cv in state.cvs)
+            if (cv.id == event.cv.id) event.cv else cv,
+        ],
+      ),
+    );
+  }
+
+  void _onCvDeleted(DashboardCvDeleted event, Emitter<DashboardState> emit) {
+    emit(
+      state.copyWith(
+        cvs: [
+          for (final cv in state.cvs)
+            if (cv.id != event.id) cv,
+        ],
+      ),
+    );
   }
 }

@@ -7,6 +7,7 @@ import 'package:sira/cv_builder/custom_section_create_page.dart';
 import 'package:sira/cv_builder/custom_section_entries_page.dart';
 import 'package:sira/cv_builder/cv_builder_page.dart';
 import 'package:sira/cv_builder/models/custom_section.dart';
+import 'package:sira/cv_builder/preview/cv_preview_page.dart';
 import 'package:sira/cv_builder/widgets/cv_builder_section_row.dart';
 import 'package:sira/cv_builder/widgets/leave_cv_builder_dialog.dart';
 import 'package:sira/l10n/app_localizations.dart';
@@ -195,9 +196,39 @@ class _HubView extends StatelessWidget {
     }
   }
 
-  void _finish(BuildContext context) {
+  Future<void> _finish(BuildContext context) async {
     final bloc = context.read<CvBuilderBloc>();
-    Navigator.of(context).pop(CvBuilderCompleted(bloc.state));
+    final result = await Navigator.of(context).push<CvPreviewResult>(
+      MaterialPageRoute(
+        builder: (_) =>
+            CvPreviewPage(state: bloc.state, mode: CvPreviewMode.finalReview),
+      ),
+    );
+    if (result == null || !context.mounted) return;
+
+    if (result.templateId != bloc.state.templateId) {
+      bloc.add(CvBuilderTemplateChanged(result.templateId));
+    }
+    if (result.saved) {
+      Navigator.of(context).pop(
+        CvBuilderCompleted(bloc.state.copyWith(templateId: result.templateId)),
+      );
+    }
+  }
+
+  Future<void> _openPreview(BuildContext context) async {
+    final bloc = context.read<CvBuilderBloc>();
+    final result = await Navigator.of(context).push<CvPreviewResult>(
+      MaterialPageRoute(
+        builder: (_) =>
+            CvPreviewPage(state: bloc.state, mode: CvPreviewMode.peek),
+      ),
+    );
+    if (result != null &&
+        result.templateId != bloc.state.templateId &&
+        context.mounted) {
+      bloc.add(CvBuilderTemplateChanged(result.templateId));
+    }
   }
 
   Future<void> _handleClose(BuildContext context) async {
@@ -250,7 +281,15 @@ class _HubView extends StatelessWidget {
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ),
-                          SizedBox(width: width * 0.12),
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () => _openPreview(context),
+                            tooltip: l10n.cvPreviewTitle,
+                            icon: Icon(
+                              Icons.visibility_outlined,
+                              color: context.palette.textSecondary,
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(height: padding),

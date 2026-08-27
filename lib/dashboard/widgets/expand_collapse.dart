@@ -57,7 +57,7 @@ class _ExpandCollapseState extends State<ExpandCollapse>
     return ClipRect(
       child: SizeTransition(
         sizeFactor: _curved,
-        axisAlignment: -1,
+        alignment: const AlignmentDirectional(-1, -1),
         child: FadeTransition(opacity: _curved, child: widget.child),
       ),
     );

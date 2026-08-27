@@ -121,7 +121,7 @@ Future<void> showMonthYearPicker(
                 // the app's input theme's own padding is subtracted —
                 // stacking sidesteps that fight for width entirely.
                 DropdownButtonFormField<int>(
-                  value: month,
+                  initialValue: month,
                   decoration: InputDecoration(labelText: l10n.cvMonth),
                   items: [
                     for (var m = 1; m <= 12; m++)
@@ -134,7 +134,7 @@ Future<void> showMonthYearPicker(
                 ),
                 SizedBox(height: padding * 0.6),
                 DropdownButtonFormField<int>(
-                  value: year,
+                  initialValue: year,
                   decoration: InputDecoration(labelText: l10n.cvYear),
                   items: [
                     for (var y = now.year; y >= now.year - 60; y--)

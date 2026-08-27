@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sira/ai_builder/ai_builder_page.dart';
 import 'package:sira/dashboard/bloc/dashboard_bloc.dart';
 import 'package:sira/dashboard/dashboard_page.dart';
 import 'package:sira/l10n/app_localizations.dart';
@@ -11,8 +12,8 @@ import 'package:sira/shell/bloc/navigation_state.dart';
 import 'package:sira/shell/widgets/app_bottom_nav_bar.dart';
 
 /// The signed-in app's root shell: a bottom nav bar switching between
-/// Home, Score, and Profile (which also holds Settings — see
-/// [ProfilePage]).
+/// Home, AI Builder, Score, and Profile (which also holds Settings —
+/// see [ProfilePage]).
 ///
 /// Every bloc the shell's tabs need is provided here, scoped to the
 /// shell itself rather than main.dart's true app root — onboarding
@@ -41,7 +42,12 @@ class _AppShellView extends StatelessWidget {
 
   // IndexedStack keeps every tab's widget tree (and scroll position)
   // alive when switching, instead of rebuilding it each time.
-  static const _tabPages = [DashboardPage(), ScorePage(), ProfilePage()];
+  static const _tabPages = [
+    DashboardPage(),
+    AiBuilderPage(),
+    ScorePage(),
+    ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {

@@ -42,6 +42,7 @@ class CvBuilderBloc extends Bloc<CvBuilderEvent, CvBuilderState> {
     on<CvBuilderCustomSectionEntryAdded>(_onCustomSectionEntryAdded);
     on<CvBuilderCustomSectionEntryUpdated>(_onCustomSectionEntryUpdated);
     on<CvBuilderCustomSectionEntryDeleted>(_onCustomSectionEntryDeleted);
+    on<CvBuilderTemplateChanged>(_onTemplateChanged);
   }
 
   final PageController pageController;
@@ -321,6 +322,13 @@ class CvBuilderBloc extends Bloc<CvBuilderEvent, CvBuilderState> {
         ],
       ),
     );
+  }
+
+  void _onTemplateChanged(
+    CvBuilderTemplateChanged event,
+    Emitter<CvBuilderState> emit,
+  ) {
+    emit(state.copyWith(templateId: event.templateId));
   }
 
   @override

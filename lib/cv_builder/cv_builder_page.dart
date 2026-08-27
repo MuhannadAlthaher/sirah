@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sira/cv_builder/bloc/cv_builder_bloc.dart';
 import 'package:sira/cv_builder/bloc/cv_builder_event.dart';
 import 'package:sira/cv_builder/bloc/cv_builder_state.dart';
+import 'package:sira/cv_builder/preview/cv_preview_page.dart';
 import 'package:sira/cv_builder/steps/certifications_step.dart';
 import 'package:sira/cv_builder/steps/education_step.dart';
 import 'package:sira/cv_builder/steps/experience_step.dart';
@@ -69,6 +70,19 @@ class _CvBuilderView extends StatelessWidget {
     Navigator.of(context).pop(context.read<CvBuilderBloc>().state);
   }
 
+  Future<void> _openPreview(BuildContext context) async {
+    final bloc = context.read<CvBuilderBloc>();
+    final result = await Navigator.of(context).push<CvPreviewResult>(
+      MaterialPageRoute(
+        builder: (_) =>
+            CvPreviewPage(state: bloc.state, mode: CvPreviewMode.peek),
+      ),
+    );
+    if (result != null && result.templateId != bloc.state.templateId) {
+      bloc.add(CvBuilderTemplateChanged(result.templateId));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<CvBuilderBloc>();
@@ -90,6 +104,7 @@ class _CvBuilderView extends StatelessWidget {
                 onBack: currentStep == 0
                     ? null
                     : () => bloc.add(const CvBuilderPreviousStepRequested()),
+                onPreview: () => _openPreview(context),
               ),
             ),
             Expanded(

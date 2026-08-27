@@ -1,6 +1,7 @@
 import 'package:sira/cv_builder/bloc/cv_builder_state.dart';
 import 'package:sira/cv_builder/models/certification.dart';
 import 'package:sira/cv_builder/models/custom_section.dart';
+import 'package:sira/cv_builder/models/cv_template.dart';
 import 'package:sira/cv_builder/models/education.dart';
 import 'package:sira/cv_builder/models/personal_info.dart';
 import 'package:sira/cv_builder/models/work_experience.dart';
@@ -184,4 +185,12 @@ class CvBuilderCustomSectionEntryDeleted extends CvBuilderEvent {
 
   final String sectionId;
   final String entryId;
+}
+
+/// The user picked a different template — from the template picker or
+/// from "Change Template" on the live preview.
+class CvBuilderTemplateChanged extends CvBuilderEvent {
+  const CvBuilderTemplateChanged(this.templateId);
+
+  final CvTemplateId templateId;
 }

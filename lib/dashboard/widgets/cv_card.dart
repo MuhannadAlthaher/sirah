@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sira/cv_builder/preview/cv_preview_page.dart';
 import 'package:sira/dashboard/cv_view_page.dart';
 import 'package:sira/data/demo_data.dart';
 import 'package:sira/dashboard/widgets/cv_overflow_menu.dart';
@@ -6,13 +7,18 @@ import 'package:sira/theme/app_palette.dart';
 
 /// One CV tile in the CVs grid: icon on top, name and last-edited
 /// label at the bottom, with a "⋮" menu (Edit/Preview/Download/
-/// Share) on the bottom-right. Tapping the tile itself (outside the
-/// menu) opens the same preview as the menu's Preview action.
+/// Share/Delete) on the bottom-right. Tapping the tile itself
+/// (outside the menu) opens the same preview as the menu's Preview
+/// action — the real rendered CV when [cv] carries [DemoCv
+/// .builderState], the old placeholder otherwise (the seeded sample
+/// cards have no real content behind them).
 ///
-/// Purely presentational: [onEdit], [onDownload], and [onShare] are
-/// supplied by the caller (typically dispatching a Bloc event) rather
-/// than decided here — this widget doesn't know what "coming soon"
-/// means or how feedback is shown.
+/// Mostly presentational: [onEdit], [onDownload], [onShare], and
+/// [onDelete] are supplied by the caller (typically dispatching a Bloc
+/// event) rather than decided here — this widget doesn't know what
+/// "coming soon" means, how a delete gets confirmed, or how feedback
+/// is shown. Which page Preview opens is the one exception, same as
+/// it always has been for this tile.
 class CvCard extends StatelessWidget {
   const CvCard({
     super.key,
@@ -21,6 +27,7 @@ class CvCard extends StatelessWidget {
     required this.onEdit,
     required this.onDownload,
     required this.onShare,
+    required this.onDelete,
   });
 
   final DemoCv cv;
@@ -28,6 +35,7 @@ class CvCard extends StatelessWidget {
   final VoidCallback onEdit;
   final VoidCallback onDownload;
   final VoidCallback onShare;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +103,7 @@ class CvCard extends StatelessWidget {
                     onPreview: () => _openPreview(context),
                     onDownload: onDownload,
                     onShare: onShare,
+                    onDelete: onDelete,
                   ),
                 ],
               ),
@@ -106,8 +115,13 @@ class CvCard extends StatelessWidget {
   }
 
   void _openPreview(BuildContext context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => CvViewPage(cv: cv)));
+    final builderState = cv.builderState;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => builderState == null
+            ? CvViewPage(cv: cv)
+            : CvPreviewPage(state: builderState, mode: CvPreviewMode.peek),
+      ),
+    );
   }
 }

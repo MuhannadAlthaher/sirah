@@ -26,9 +26,79 @@ class AppLocalizations {
   String get brandAccent => 'AI';
 
   String get homeTab => _text(en: 'Home', ar: 'الرئيسية');
+  String get aiBuilderTab => _text(en: 'AI Builder', ar: 'الذكاء الاصطناعي');
   String get scoreTab => _text(en: 'Score', ar: 'الدرجة');
   String get profileTab => _text(en: 'Profile', ar: 'الملف الشخصي');
   String get settingsTab => _text(en: 'Settings', ar: 'الإعدادات');
+
+  String get aiBuilderInputPlaceholder =>
+      _text(en: 'Type your answer...', ar: 'اكتب إجابتك...');
+  String get aiBuilderSend => _text(en: 'Send', ar: 'إرسال');
+  String get aiBuilderComingSoon => _text(
+    en: 'AI Builder chat is coming soon',
+    ar: 'محادثة الذكاء الاصطناعي متوفرة قريباً',
+  );
+
+  // Short chip labels for the step-progress row — kept distinct from
+  // the longer cvStep*Title getters (e.g. "Professional Experience"),
+  // since a horizontal chip row needs compact labels.
+  String get aiBuilderChipPersonalInfo =>
+      _text(en: 'Personal info', ar: 'المعلومات الشخصية');
+  String get aiBuilderChipSummary => _text(en: 'Summary', ar: 'الملخص');
+  String get aiBuilderChipExperience =>
+      _text(en: 'Work experience', ar: 'الخبرة العملية');
+  String get aiBuilderChipEducation => _text(en: 'Education', ar: 'التعليم');
+  String get aiBuilderChipSkills => _text(en: 'Skills', ar: 'المهارات');
+  String get aiBuilderChipCertifications =>
+      _text(en: 'Certifications', ar: 'الشهادات');
+
+  // Static demo transcript shown in the AI Builder chat — a visual
+  // mock of a scripted CV interview; sending a real message still
+  // stubs to aiBuilderComingSoon, same as every other AI action.
+  String get aiBuilderDemoAiMessage1 => _text(
+    en:
+        "Hi Alex — I'll interview you and write the CV as we go. First: "
+        'your name, city and the role you\'re aiming at?',
+    ar:
+        'مرحباً أليكس — سأجري معك مقابلة وأكتب سيرتك الذاتية معك خطوة '
+        'بخطوة. أولاً: اسمك ومدينتك والمنصب الذي تستهدفه؟',
+  );
+  String get aiBuilderDemoUserMessage1 => _text(
+    en: 'Alex Morgan · Riyadh · Senior Product Manager',
+    ar: 'أليكس مورغان · الرياض · مدير منتج أول',
+  );
+  String get aiBuilderDemoAiMessage2 => _text(
+    en: 'Got it. Header written with a clean, parsable contact line.',
+    ar: 'تم. كتبت رأس السيرة الذاتية بسطر تواصل واضح وقابل للقراءة الآلية.',
+  );
+  String get aiBuilderDemoConfirmation1 =>
+      _text(en: 'Personal info saved', ar: 'تم حفظ المعلومات الشخصية');
+  String get aiBuilderDemoAiMessage3 => _text(
+    en: 'In one sentence — what are you actually good at?',
+    ar: 'في جملة واحدة — ما الذي تجيده فعلاً؟',
+  );
+  String get aiBuilderDemoUserMessage2 => _text(
+    en: 'I ship fintech payment products',
+    ar: 'أطلق منتجات دفع في مجال التقنية المالية',
+  );
+  String get aiBuilderDemoAiMessage4 => _text(
+    en:
+        'I turned that into a 3-line summary with two numbers in it. '
+        'Recruiters read this first.',
+    ar:
+        'حوّلت ذلك إلى ملخص من 3 أسطر يتضمن رقمين. مسؤولو التوظيف '
+        'يقرؤون هذا الجزء أولاً.',
+  );
+  String get aiBuilderDemoConfirmation2 =>
+      _text(en: 'Summary drafted', ar: 'تم إعداد الملخص');
+  String get aiBuilderDemoAiMessage5 => _text(
+    en: "Let's do your current job. Where, and what's your title?",
+    ar: 'لنتحدث عن وظيفتك الحالية. أين تعمل، وما مسماك الوظيفي؟',
+  );
+  String get aiBuilderDemoQuickReply => _text(
+    en: 'BSc Computer Science, KSU, 2018',
+    ar: 'بكالوريوس علوم حاسب، جامعة الملك سعود، 2018',
+  );
 
   String get skip => _text(en: 'Skip', ar: 'تخطي');
   String get continueLabel => _text(en: 'Continue', ar: 'متابعة');
@@ -362,6 +432,8 @@ class AppLocalizations {
     en: 'Describe your responsibilities, achievements, and impact in this role.',
     ar: 'صف مسؤولياتك وإنجازاتك وتأثيرك في هذا الدور.',
   );
+  String get cvExpandEditor => _text(en: 'Expand editor', ar: 'توسيع المحرر');
+  String get cvDone => _text(en: 'Done', ar: 'تم');
   String get cvCurrentlyWorkHere =>
       _text(en: 'I currently work here', ar: 'أعمل هنا حالياً');
   String get cvPresent => _text(en: 'Present', ar: 'حتى الآن');
@@ -516,6 +588,68 @@ class AppLocalizations {
   String get cvHubSummaryWritten => _text(en: 'Written', ar: 'تمت الكتابة');
   String get cvHubFinishCv =>
       _text(en: 'Finish CV', ar: 'إنهاء السيرة الذاتية');
+
+  // --- CV Template Picker ---
+  String get cvTemplatePickerTitle =>
+      _text(en: 'Choose a Template', ar: 'اختر قالبًا');
+  String get cvTemplatePickerSubtitle => _text(
+    en:
+        'Pick a design to start with — you can switch anytime from '
+        'the preview.',
+    ar: 'اختر تصميمًا للبدء — يمكنك التبديل في أي وقت من شاشة المعاينة.',
+  );
+  String get cvTemplateUseThis =>
+      _text(en: 'Use this template', ar: 'استخدام هذا القالب');
+  String get cvTemplateMinimalClassicName =>
+      _text(en: 'Minimal Classic', ar: 'كلاسيكي بسيط');
+  String get cvTemplateModernCleanName =>
+      _text(en: 'Modern Clean', ar: 'حديث وأنيق');
+  String get cvTemplateCompactTechnicalName =>
+      _text(en: 'Compact Technical', ar: 'تقني مضغوط');
+  String get cvTemplateProfessionalExecutiveName =>
+      _text(en: 'Professional Executive', ar: 'احترافي تنفيذي');
+  String get cvTemplatePureMinimalName =>
+      _text(en: 'Pure Minimal', ar: 'بسيط نقي');
+  String get cvTemplateCorporateFormalName =>
+      _text(en: 'Corporate Formal', ar: 'رسمي مؤسسي');
+
+  // --- CV Preview ---
+  String get cvPreviewTitle => _text(en: 'Preview', ar: 'معاينة');
+  String get cvPreviewChangeTemplate =>
+      _text(en: 'Change Template', ar: 'تغيير القالب');
+  String get cvPreviewSaveCv => _text(en: 'Save CV', ar: 'حفظ السيرة الذاتية');
+  String get cvPreviewBackToEditing =>
+      _text(en: 'Back to Editing', ar: 'العودة للتحرير');
+  String get cvPreviewYourName => _text(en: 'Your Name', ar: 'اسمك');
+
+  // --- Watermark / dummy paywall ---
+  String get cvWatermarkText =>
+      _text(en: 'SIRA · UNLICENSED PREVIEW', ar: 'سيرة · معاينة غير مرخصة');
+  String get cvWatermarkRemoveCta =>
+      _text(en: 'Remove Watermark', ar: 'إزالة العلامة المائية');
+  String get cvPaywallTitle =>
+      _text(en: 'Unlock Your Final CV', ar: 'افتح سيرتك الذاتية النهائية');
+  String get cvPaywallDescription => _text(
+    en: 'Remove the watermark and export a clean, ready-to-send CV.',
+    ar: 'أزل العلامة المائية وصدّر سيرة ذاتية نظيفة جاهزة للإرسال.',
+  );
+  String get cvPaywallPrice =>
+      _text(en: '\$4.99 — one-time', ar: '٤٫٩٩ \$ — دفعة واحدة');
+  String get cvPaywallDummyNotice => _text(
+    en: 'Test mode — no real payment will be charged.',
+    ar: 'وضع الاختبار — لن يتم خصم أي دفعة حقيقية.',
+  );
+  String get cvPaywallSimulatePayment =>
+      _text(en: 'Simulate Successful Payment', ar: 'محاكاة عملية دفع ناجحة');
+  String get cvPaywallCancel => _text(en: 'Not Now', ar: 'ليس الآن');
+
+  // --- Delete CV ---
+  String get cvDeleteTitle =>
+      _text(en: 'Delete CV?', ar: 'حذف السيرة الذاتية؟');
+  String cvDeleteMessage(String name) => _text(
+    en: '"$name" will be deleted permanently. This can\'t be undone.',
+    ar: 'سيتم حذف "$name" نهائيًا. لا يمكن التراجع عن هذا الإجراء.',
+  );
 }
 
 class _AppLocalizationsDelegate

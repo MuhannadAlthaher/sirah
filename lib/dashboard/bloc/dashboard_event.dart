@@ -43,6 +43,24 @@ class DashboardCvCompleted extends DashboardEvent {
   final DemoCv cv;
 }
 
+/// The user finished editing an already-existing CV (via a CV card's
+/// Edit action) — [cv] replaces the entry with the same id in place,
+/// whether they tapped "Finish CV" or "Save & Exit" partway through;
+/// either way the edit is real progress on a CV that already exists,
+/// not a new draft.
+class DashboardCvUpdated extends DashboardEvent {
+  const DashboardCvUpdated(this.cv);
+
+  final DemoCv cv;
+}
+
+/// The user confirmed deleting a CV from "My CVs".
+class DashboardCvDeleted extends DashboardEvent {
+  const DashboardCvDeleted(this.id);
+
+  final String id;
+}
+
 /// The "My CVs" section header was tapped.
 class DashboardCvsSectionToggled extends DashboardEvent {
   const DashboardCvsSectionToggled();

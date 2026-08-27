@@ -1,5 +1,6 @@
 import 'package:sira/cv_builder/models/certification.dart';
 import 'package:sira/cv_builder/models/custom_section.dart';
+import 'package:sira/cv_builder/models/cv_template.dart';
 import 'package:sira/cv_builder/models/education.dart';
 import 'package:sira/cv_builder/models/personal_info.dart';
 import 'package:sira/cv_builder/models/skills_selection.dart';
@@ -22,6 +23,7 @@ class CvBuilderState {
     required this.certifications,
     required this.summary,
     this.customSections = const [],
+    this.templateId = CvTemplateId.modernClean,
   });
 
   factory CvBuilderState.initial() => const CvBuilderState(
@@ -34,6 +36,7 @@ class CvBuilderState {
     certifications: [],
     summary: '',
     customSections: [],
+    templateId: CvTemplateId.modernClean,
   );
 
   /// Personal Info, Experience, Education, Skills, Certifications,
@@ -54,6 +57,11 @@ class CvBuilderState {
   /// Sections the user built themselves (see `CustomSectionCreatePage`)
   /// — always optional, never counted in [essentialSectionsComplete].
   final List<CustomSection> customSections;
+
+  /// Which of the 4 ATS-safe designs the live preview and the final
+  /// export render with — chosen on `CvTemplatePickerPage`, changeable
+  /// later from the preview's "Change Template" action.
+  final CvTemplateId templateId;
 
   bool get isLastStep => currentStep == stepCount - 1;
 
@@ -122,6 +130,7 @@ class CvBuilderState {
     List<Certification>? certifications,
     String? summary,
     List<CustomSection>? customSections,
+    CvTemplateId? templateId,
   }) {
     return CvBuilderState(
       currentStep: currentStep ?? this.currentStep,
@@ -133,6 +142,7 @@ class CvBuilderState {
       certifications: certifications ?? this.certifications,
       summary: summary ?? this.summary,
       customSections: customSections ?? this.customSections,
+      templateId: templateId ?? this.templateId,
     );
   }
 }

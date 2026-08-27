@@ -18,6 +18,7 @@ class StepProgressHeader extends StatelessWidget {
     required this.title,
     required this.onClose,
     this.onBack,
+    this.onPreview,
   });
 
   /// 0-based.
@@ -31,6 +32,9 @@ class StepProgressHeader extends StatelessWidget {
 
   /// Null on the first step, where there's nothing to go back to.
   final VoidCallback? onBack;
+
+  /// The "peek at the CV" action — null hides the button entirely.
+  final VoidCallback? onPreview;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +64,16 @@ class StepProgressHeader extends StatelessWidget {
                         ),
                       ),
                     const Spacer(),
+                    if (onPreview != null)
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: onPreview,
+                        tooltip: l10n.cvPreviewTitle,
+                        icon: Icon(
+                          Icons.visibility_outlined,
+                          color: context.palette.textSecondary,
+                        ),
+                      ),
                     IconButton(
                       padding: EdgeInsets.zero,
                       onPressed: onClose,

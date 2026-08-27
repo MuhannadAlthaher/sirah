@@ -1,3 +1,4 @@
+import 'package:sira/cv_builder/bloc/cv_builder_state.dart';
 import 'package:sira/l10n/app_localizations.dart';
 
 /// The signed-in user, shown across the dashboard/profile/score
@@ -12,12 +13,37 @@ class DemoUser {
 
 /// One CV entry shown on the dashboard. Demo data for now — swap for
 /// the user's real saved CVs once the builder/backend exists.
+///
+/// [builderState] is null for the seeded sample cards (there's no real
+/// content behind them, so Edit/Preview/Share fall back to a "coming
+/// soon" placeholder) and set for any CV actually produced by the CV
+/// Builder — that's what lets Edit reopen it with its real answers,
+/// and Preview/Share render its real content.
 class DemoCv {
-  const DemoCv({required this.id, required this.name, required this.subtitle});
+  const DemoCv({
+    required this.id,
+    required this.name,
+    required this.subtitle,
+    this.builderState,
+  });
 
   final String id;
   final String name;
   final String subtitle;
+  final CvBuilderState? builderState;
+
+  DemoCv copyWith({
+    String? name,
+    String? subtitle,
+    CvBuilderState? builderState,
+  }) {
+    return DemoCv(
+      id: id,
+      name: name ?? this.name,
+      subtitle: subtitle ?? this.subtitle,
+      builderState: builderState ?? this.builderState,
+    );
+  }
 }
 
 DemoUser demoUserFor(AppLocalizations l10n) =>

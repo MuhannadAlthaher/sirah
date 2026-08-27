@@ -1,0 +1,9 @@
+{
+  "artboards": [
+    { "file": "MinimalClassic.dc.html", "title": "Minimal Classic", "x": 0, "y": 0, "w": 816, "h": 1450, "print": "flow" },
+    { "file": "Main.dc.html", "title": "Modern Clean", "x": 916, "y": 0, "w": 816, "h": 1600, "print": "flow" },
+    { "file": "CompactTechnical.dc.html", "title": "Compact Technical", "x": 1832, "y": 0, "w": 816, "h": 1250, "print": "flow" },
+    { "file": "ProfessionalExecutive.dc.html", "title": "Professional Executive", "x": 2748, "y": 0, "w": 816, "h": 1700, "print": "flow" }
+  ],
+  "launch": { "view": "canvas" }
+}
