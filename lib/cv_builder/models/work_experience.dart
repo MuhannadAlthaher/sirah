@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:sira/l10n/app_localizations.dart';
 
 /// One entry in the CV Builder's Step 3 (Professional Experience)
 /// list. Start/end are separate month/year ints rather than a
 /// [DateTime] — the user only ever picks a month and a year, so
 /// there's no real "day" to store or reason about.
-class WorkExperience {
+class WorkExperience extends Equatable {
   const WorkExperience({
     required this.id,
     this.employer = '',
@@ -53,6 +54,48 @@ class WorkExperience {
     if (isCurrent) return l10n.cvPresent;
     if (endMonth == null || endYear == null) return '';
     return l10n.formatMonthYear(endMonth!, endYear!);
+  }
+
+  @override
+  List<Object?> get props => [
+    id,
+    employer,
+    jobTitle,
+    startMonth,
+    startYear,
+    endMonth,
+    endYear,
+    isCurrent,
+    location,
+    description,
+  ];
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'employer': employer,
+    'jobTitle': jobTitle,
+    'startMonth': startMonth,
+    'startYear': startYear,
+    'endMonth': endMonth,
+    'endYear': endYear,
+    'isCurrent': isCurrent,
+    'location': location,
+    'description': description,
+  };
+
+  factory WorkExperience.fromJson(Map<String, dynamic> json) {
+    return WorkExperience(
+      id: json['id'] as String,
+      employer: json['employer'] as String? ?? '',
+      jobTitle: json['jobTitle'] as String? ?? '',
+      startMonth: json['startMonth'] as int?,
+      startYear: json['startYear'] as int?,
+      endMonth: json['endMonth'] as int?,
+      endYear: json['endYear'] as int?,
+      isCurrent: json['isCurrent'] as bool? ?? false,
+      location: json['location'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+    );
   }
 
   WorkExperience copyWith({

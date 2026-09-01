@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:sira/l10n/app_localizations.dart';
 
 /// One entry inside a user-created [CustomSection]. Which fields are
@@ -6,7 +7,7 @@ import 'package:sira/l10n/app_localizations.dart';
 /// — this model just carries storage for all of them unconditionally,
 /// same way [WorkExperience] always has a `location` even though it's
 /// optional.
-class CustomSectionEntry {
+class CustomSectionEntry extends Equatable {
   const CustomSectionEntry({
     required this.id,
     this.title = '',
@@ -45,6 +46,42 @@ class CustomSectionEntry {
     if (isCurrent) return l10n.cvPresent;
     if (endMonth == null || endYear == null) return '';
     return l10n.formatMonthYear(endMonth!, endYear!);
+  }
+
+  @override
+  List<Object?> get props => [
+    id,
+    title,
+    description,
+    startMonth,
+    startYear,
+    endMonth,
+    endYear,
+    isCurrent,
+  ];
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'description': description,
+    'startMonth': startMonth,
+    'startYear': startYear,
+    'endMonth': endMonth,
+    'endYear': endYear,
+    'isCurrent': isCurrent,
+  };
+
+  factory CustomSectionEntry.fromJson(Map<String, dynamic> json) {
+    return CustomSectionEntry(
+      id: json['id'] as String,
+      title: json['title'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      startMonth: json['startMonth'] as int?,
+      startYear: json['startYear'] as int?,
+      endMonth: json['endMonth'] as int?,
+      endYear: json['endYear'] as int?,
+      isCurrent: json['isCurrent'] as bool? ?? false,
+    );
   }
 
   CustomSectionEntry copyWith({
@@ -86,7 +123,7 @@ class CustomSectionEntry {
 /// (does each entry have a description? a start/end date range?).
 /// Always optional: it never counts toward the Hub's "essential"
 /// percentage, only toward "sections that strengthen your CV".
-class CustomSection {
+class CustomSection extends Equatable {
   const CustomSection({
     required this.id,
     this.title = '',
@@ -105,6 +142,29 @@ class CustomSection {
   final List<CustomSectionEntry> entries;
 
   bool get isComplete => entries.isNotEmpty;
+
+  @override
+  List<Object?> get props => [id, title, hasDescription, hasDateRange, entries];
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'hasDescription': hasDescription,
+    'hasDateRange': hasDateRange,
+    'entries': entries.map((e) => e.toJson()).toList(),
+  };
+
+  factory CustomSection.fromJson(Map<String, dynamic> json) {
+    return CustomSection(
+      id: json['id'] as String,
+      title: json['title'] as String? ?? '',
+      hasDescription: json['hasDescription'] as bool? ?? false,
+      hasDateRange: json['hasDateRange'] as bool? ?? false,
+      entries: ((json['entries'] as List?) ?? const [])
+          .map((e) => CustomSectionEntry.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
 
   CustomSection copyWith({
     String? title,

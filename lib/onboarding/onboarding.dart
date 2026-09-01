@@ -58,64 +58,77 @@ class _OnboardingView extends StatelessWidget {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final padding = constraints.maxWidth * 0.02;
+            // Capped the same way every other screen caps its content
+            // width, so onboarding doesn't stretch into an oversized,
+            // sparse layout on tablets/desktop/web.
+            final width = constraints.maxWidth.clamp(0, 480).toDouble();
+            final padding = width * 0.02;
 
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: padding),
-              child: Column(
-                children: [
-                  SizedBox(height: padding),
-                  OnboardingHeader(
-                    onSkip: () => bloc.add(const OnboardingSkipRequested()),
-                  ),
-                  Expanded(
-                    child: PageView(
-                      controller: bloc.pageController,
-                      onPageChanged: (index) =>
-                          bloc.add(OnboardingPageChanged(index)),
-                      children: [
-                        for (final slide in slides)
-                          OnboardingSlideView(data: slide),
-                      ],
-                    ),
-                  ),
-                  BlocSelector<OnboardingBloc, OnboardingState, int>(
-                    selector: (state) => state.currentIndex,
-                    builder: (context, currentIndex) => PageIndicator(
-                      count: slides.length,
-                      currentIndex: currentIndex,
-                    ),
-                  ),
-                  SizedBox(height: padding),
-                  BlocBuilder<OnboardingBloc, OnboardingState>(
-                    builder: (context, state) {
-                      final currentSlide = slides[state.currentIndex];
-
-                      return Column(
-                        children: [
-                          PrimaryCtaButton(
-                            label: currentSlide.ctaLabel,
-                            onPressed: () {
-                              if (state.isLastSlide) {
-                                _openLogin(context);
-                              } else {
-                                bloc.add(const OnboardingNextSlideRequested());
-                              }
-                            },
-                          ),
-                          if (currentSlide.showSecondaryAction) ...[
-                            SizedBox(height: padding * 0.6),
-                            SecondaryOutlineButton(
-                              label: context.l10n.alreadyHaveAccount,
-                              onPressed: () => _openLogin(context),
-                            ),
+            return Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                width: width,
+                height: constraints.maxHeight,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: padding),
+                  child: Column(
+                    children: [
+                      SizedBox(height: padding),
+                      OnboardingHeader(
+                        onSkip: () => bloc.add(const OnboardingSkipRequested()),
+                      ),
+                      Expanded(
+                        child: PageView(
+                          controller: bloc.pageController,
+                          onPageChanged: (index) =>
+                              bloc.add(OnboardingPageChanged(index)),
+                          children: [
+                            for (final slide in slides)
+                              OnboardingSlideView(data: slide),
                           ],
-                        ],
-                      );
-                    },
+                        ),
+                      ),
+                      BlocSelector<OnboardingBloc, OnboardingState, int>(
+                        selector: (state) => state.currentIndex,
+                        builder: (context, currentIndex) => PageIndicator(
+                          count: slides.length,
+                          currentIndex: currentIndex,
+                        ),
+                      ),
+                      SizedBox(height: padding),
+                      BlocBuilder<OnboardingBloc, OnboardingState>(
+                        builder: (context, state) {
+                          final currentSlide = slides[state.currentIndex];
+
+                          return Column(
+                            children: [
+                              PrimaryCtaButton(
+                                label: currentSlide.ctaLabel,
+                                onPressed: () {
+                                  if (state.isLastSlide) {
+                                    _openLogin(context);
+                                  } else {
+                                    bloc.add(
+                                      const OnboardingNextSlideRequested(),
+                                    );
+                                  }
+                                },
+                              ),
+                              if (currentSlide.showSecondaryAction) ...[
+                                SizedBox(height: padding * 0.6),
+                                SecondaryOutlineButton(
+                                  label: context.l10n.alreadyHaveAccount,
+                                  onPressed: () => _openLogin(context),
+                                ),
+                              ],
+                            ],
+                          );
+                        },
+                      ),
+                      SizedBox(height: padding),
+                    ],
                   ),
-                  SizedBox(height: padding),
-                ],
+                ),
               ),
             );
           },

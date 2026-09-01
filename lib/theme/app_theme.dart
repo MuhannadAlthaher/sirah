@@ -55,7 +55,69 @@ class AppTheme {
         hintStyle: TextStyle(color: palette.textMuted),
         errorStyle: TextStyle(color: palette.danger),
       ),
+      // One smooth, consistent push transition on every platform this
+      // app ships to — Flutter's own per-platform defaults range from
+      // a fairly abrupt zoom (Android) to a plain upward fade
+      // (desktop/web), which reads as inconsistent when the same app
+      // runs on both. Duration stays Flutter's own default (300ms),
+      // matching the 300ms/easeOut already used for every in-screen
+      // animation elsewhere (see CvBuilderBloc, OnboardingBloc).
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: _SmoothPageTransitionsBuilder(),
+          TargetPlatform.iOS: _SmoothPageTransitionsBuilder(),
+          TargetPlatform.linux: _SmoothPageTransitionsBuilder(),
+          TargetPlatform.macOS: _SmoothPageTransitionsBuilder(),
+          TargetPlatform.windows: _SmoothPageTransitionsBuilder(),
+          TargetPlatform.fuchsia: _SmoothPageTransitionsBuilder(),
+        },
+      ),
       extensions: [palette],
+    );
+  }
+}
+
+/// Slides the incoming screen in from the trailing edge while fading
+/// it in, and gives the screen being covered a faint opposite drift —
+/// the same "push" shape as a native transition, just toned down and
+/// identical across platforms.
+class _SmoothPageTransitionsBuilder extends PageTransitionsBuilder {
+  const _SmoothPageTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    final entering = CurvedAnimation(
+      parent: animation,
+      curve: Curves.easeOutCubic,
+      reverseCurve: Curves.easeInCubic,
+    );
+    final leaving = CurvedAnimation(
+      parent: secondaryAnimation,
+      curve: Curves.easeOutCubic,
+      reverseCurve: Curves.easeInCubic,
+    );
+    // Mirror the drift for RTL (Arabic) so "forward" still reads as
+    // the leading edge rather than always sliding from the right.
+    final sign = Directionality.of(context) == TextDirection.rtl ? -1 : 1;
+
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: Offset.zero,
+        end: Offset(-0.04 * sign, 0),
+      ).animate(leaving),
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: Offset(0.06 * sign, 0),
+          end: Offset.zero,
+        ).animate(entering),
+        child: FadeTransition(opacity: entering, child: child),
+      ),
     );
   }
 }

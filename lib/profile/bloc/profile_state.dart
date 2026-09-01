@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:sira/data/demo_data.dart';
 import 'package:sira/l10n/app_localizations.dart';
 import 'package:sira/profile/bloc/profile_field.dart';
 
 /// The user's editable profile fields.
-class ProfileState {
+class ProfileState extends Equatable {
   const ProfileState({
     required this.name,
     required this.position,
@@ -59,6 +60,17 @@ class ProfileState {
   ProfileState withDateOfBirth(DateTime date) => _copyWith(dateOfBirth: date);
 
   ProfileState withAvatarPath(String path) => _copyWith(avatarPath: path);
+
+  @override
+  List<Object?> get props => [
+    name,
+    position,
+    email,
+    phone,
+    location,
+    dateOfBirth,
+    avatarPath,
+  ];
 
   ProfileState _copyWith({
     String? name,

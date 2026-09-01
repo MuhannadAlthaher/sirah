@@ -48,7 +48,7 @@ class DashboardAtsScoreCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ScoreRing(score: score, size: width * 0.46),
+                  ScoreRing(score: score, size: width * 0.54),
                   SizedBox(height: padding * 0.5),
                   Text(
                     label,

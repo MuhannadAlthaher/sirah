@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:sira/cv_builder/bloc/cv_builder_state.dart';
 import 'package:sira/data/demo_data.dart';
 
@@ -6,7 +7,7 @@ import 'package:sira/data/demo_data.dart';
 /// [cvs], since it isn't a finished CV), whether each collapsible
 /// section is expanded, and any one-off feedback message (e.g.
 /// "coming soon") waiting to be shown.
-class DashboardState {
+class DashboardState extends Equatable {
   const DashboardState({
     required this.user,
     required this.cvs,
@@ -39,6 +40,17 @@ class DashboardState {
   final CvBuilderState? cvDraft;
 
   final String? pendingMessage;
+
+  @override
+  List<Object?> get props => [
+    user,
+    cvs,
+    atsScore,
+    cvsExpanded,
+    coverLettersExpanded,
+    cvDraft,
+    pendingMessage,
+  ];
 
   DashboardState copyWith({
     List<DemoCv>? cvs,

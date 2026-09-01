@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:sira/l10n/app_localizations.dart';
 
 /// One entry in the CV Builder's Education step. Mirrors
 /// [WorkExperience]'s shape (month/year start/end, an "is current"
 /// flag) since it's edited the same way.
-class Education {
+class Education extends Equatable {
   const Education({
     required this.id,
     this.institution = '',
@@ -50,6 +51,48 @@ class Education {
     if (isCurrent) return l10n.cvPresent;
     if (endMonth == null || endYear == null) return '';
     return l10n.formatMonthYear(endMonth!, endYear!);
+  }
+
+  @override
+  List<Object?> get props => [
+    id,
+    institution,
+    degree,
+    fieldOfStudy,
+    startMonth,
+    startYear,
+    endMonth,
+    endYear,
+    isCurrent,
+    description,
+  ];
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'institution': institution,
+    'degree': degree,
+    'fieldOfStudy': fieldOfStudy,
+    'startMonth': startMonth,
+    'startYear': startYear,
+    'endMonth': endMonth,
+    'endYear': endYear,
+    'isCurrent': isCurrent,
+    'description': description,
+  };
+
+  factory Education.fromJson(Map<String, dynamic> json) {
+    return Education(
+      id: json['id'] as String,
+      institution: json['institution'] as String? ?? '',
+      degree: json['degree'] as String? ?? '',
+      fieldOfStudy: json['fieldOfStudy'] as String? ?? '',
+      startMonth: json['startMonth'] as int?,
+      startYear: json['startYear'] as int?,
+      endMonth: json['endMonth'] as int?,
+      endYear: json['endYear'] as int?,
+      isCurrent: json['isCurrent'] as bool? ?? false,
+      description: json['description'] as String? ?? '',
+    );
   }
 
   Education copyWith({

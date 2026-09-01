@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sira/cv_builder/bloc/cv_builder_state.dart';
+import 'package:sira/cv_builder/data/countries.dart';
 import 'package:sira/cv_builder/models/certification.dart';
 import 'package:sira/cv_builder/models/custom_section.dart';
+import 'package:sira/cv_builder/models/cv_section_order.dart';
 import 'package:sira/cv_builder/models/cv_template.dart';
 import 'package:sira/cv_builder/models/education.dart';
 import 'package:sira/cv_builder/models/work_experience.dart';
@@ -50,7 +52,7 @@ class CvRenderer extends StatelessWidget {
 
   Widget _header(AppLocalizations l10n, _Style style, String roleTitle) {
     final name = _fullName(l10n);
-    final contact = _contactLine(style.contactSeparator);
+    final contact = _contactLine(style.contactSeparator, l10n);
 
     switch (templateId) {
       case CvTemplateId.minimalClassic:
@@ -311,11 +313,12 @@ class CvRenderer extends StatelessWidget {
     return full.isEmpty ? l10n.cvPreviewYourName : full;
   }
 
-  String _contactLine(String separator) {
+  String _contactLine(String separator, AppLocalizations l10n) {
     final info = state.personalInfo;
     final location = [
       info.city,
-      info.country,
+      if (info.country.trim().isNotEmpty)
+        countryDisplayName(info.country, l10n),
     ].where((s) => s.trim().isNotEmpty).join(', ');
     final parts = [
       info.email,
@@ -344,9 +347,22 @@ class CvRenderer extends StatelessWidget {
       );
     }
 
-    if (state.experiences.isNotEmpty) {
-      sections.add(
-        _section(
+    for (final key in orderedRenderableSectionKeys(state)) {
+      sections.add(_sectionFor(key, l10n, style));
+    }
+
+    return [
+      for (final section in sections) ...[
+        section,
+        SizedBox(height: style.sectionGap),
+      ],
+    ];
+  }
+
+  Widget _sectionFor(String key, AppLocalizations l10n, _Style style) {
+    switch (key) {
+      case CvSectionKeys.experience:
+        return _section(
           style: style,
           heading: l10n.cvStepExperienceTitle,
           child: Column(
@@ -359,13 +375,10 @@ class CvRenderer extends StatelessWidget {
               ],
             ],
           ),
-        ),
-      );
-    }
+        );
 
-    if (state.educations.isNotEmpty) {
-      sections.add(
-        _section(
+      case CvSectionKeys.education:
+        return _section(
           style: style,
           heading: l10n.cvStepEducationTitle,
           child: Column(
@@ -378,13 +391,10 @@ class CvRenderer extends StatelessWidget {
               ],
             ],
           ),
-        ),
-      );
-    }
+        );
 
-    if (state.skills.selected.isNotEmpty) {
-      sections.add(
-        _section(
+      case CvSectionKeys.skills:
+        return _section(
           style: style,
           heading: l10n.cvStepSkillsTitle,
           child: style.skillsAsChips
@@ -414,13 +424,10 @@ class CvRenderer extends StatelessWidget {
                   ],
                 )
               : Text(state.skills.selected.join(', '), style: style.bodyStyle),
-        ),
-      );
-    }
+        );
 
-    if (state.certifications.isNotEmpty) {
-      sections.add(
-        _section(
+      case CvSectionKeys.certifications:
+        return _section(
           style: style,
           heading: l10n.cvStepCertificationsTitle,
           child: Column(
@@ -433,14 +440,11 @@ class CvRenderer extends StatelessWidget {
               ],
             ],
           ),
-        ),
-      );
-    }
+        );
 
-    for (final custom in state.customSections) {
-      if (custom.entries.isEmpty) continue;
-      sections.add(
-        _section(
+      default:
+        final custom = state.customSections.firstWhere((s) => s.id == key);
+        return _section(
           style: style,
           heading: custom.title,
           child: Column(
@@ -453,16 +457,8 @@ class CvRenderer extends StatelessWidget {
               ],
             ],
           ),
-        ),
-      );
+        );
     }
-
-    return [
-      for (final section in sections) ...[
-        section,
-        SizedBox(height: style.sectionGap),
-      ],
-    ];
   }
 
   Widget _section({

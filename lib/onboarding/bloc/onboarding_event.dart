@@ -1,8 +1,13 @@
+import 'package:equatable/equatable.dart';
+
 /// Events the onboarding UI dispatches to [OnboardingBloc]. The
 /// screen never mutates its own page state — it only describes what
 /// happened.
-sealed class OnboardingEvent {
+sealed class OnboardingEvent extends Equatable {
   const OnboardingEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
 /// The primary CTA was tapped, requesting the next slide.
@@ -21,4 +26,7 @@ class OnboardingPageChanged extends OnboardingEvent {
   const OnboardingPageChanged(this.index);
 
   final int index;
+
+  @override
+  List<Object?> get props => [index];
 }

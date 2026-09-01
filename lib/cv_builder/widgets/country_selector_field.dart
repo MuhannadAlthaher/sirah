@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sira/cv_builder/data/countries.dart';
 import 'package:sira/cv_builder/widgets/country_picker_page.dart';
 import 'package:sira/l10n/app_localizations.dart';
 import 'package:sira/theme/app_palette.dart';
@@ -35,7 +36,9 @@ class CountrySelectorField extends StatelessWidget {
           ),
         ),
         child: Text(
-          value.isEmpty ? l10n.cvSelectCountry : value,
+          value.isEmpty
+              ? l10n.cvSelectCountry
+              : countryDisplayName(value, l10n),
           style: TextStyle(
             color: value.isEmpty
                 ? Theme.of(context).hintColor

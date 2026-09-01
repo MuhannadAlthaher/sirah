@@ -54,9 +54,12 @@ class _AppShellView extends StatelessWidget {
     return BlocBuilder<NavigationBloc, NavigationState>(
       builder: (context, state) {
         return Scaffold(
-          body: IndexedStack(
+          body: _TabFade(
             index: state.currentTab.index,
-            children: _tabPages,
+            child: IndexedStack(
+              index: state.currentTab.index,
+              children: _tabPages,
+            ),
           ),
           bottomNavigationBar: AppBottomNavBar(
             currentTab: state.currentTab,
@@ -66,6 +69,54 @@ class _AppShellView extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+/// Fades [child] in on every [index] change — without ever rebuilding
+/// or disposing it, so the [IndexedStack] underneath keeps doing its
+/// job of preserving each tab's state. A plain [AnimatedSwitcher]
+/// can't be used here since it would swap the whole subtree (and its
+/// state) on every tab change instead of just cross-fading it.
+class _TabFade extends StatefulWidget {
+  const _TabFade({required this.index, required this.child});
+
+  final int index;
+  final Widget child;
+
+  @override
+  State<_TabFade> createState() => _TabFadeState();
+}
+
+class _TabFadeState extends State<_TabFade>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 180),
+    value: 1,
+  );
+
+  @override
+  void didUpdateWidget(covariant _TabFade oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.index != widget.index) {
+      _controller
+        ..value = 0
+        ..forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+      child: widget.child,
     );
   }
 }

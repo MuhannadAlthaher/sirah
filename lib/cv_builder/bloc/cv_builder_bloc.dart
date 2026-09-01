@@ -43,6 +43,8 @@ class CvBuilderBloc extends Bloc<CvBuilderEvent, CvBuilderState> {
     on<CvBuilderCustomSectionEntryUpdated>(_onCustomSectionEntryUpdated);
     on<CvBuilderCustomSectionEntryDeleted>(_onCustomSectionEntryDeleted);
     on<CvBuilderTemplateChanged>(_onTemplateChanged);
+    on<CvBuilderSectionOrderChanged>(_onSectionOrderChanged);
+    on<CvBuilderSectionActiveToggled>(_onSectionActiveToggled);
   }
 
   final PageController pageController;
@@ -245,7 +247,12 @@ class CvBuilderBloc extends Bloc<CvBuilderEvent, CvBuilderState> {
     Emitter<CvBuilderState> emit,
   ) {
     emit(
-      state.copyWith(customSections: [...state.customSections, event.section]),
+      state.copyWith(
+        customSections: [...state.customSections, event.section],
+        // New sections join at the end of the render order — the
+        // user can drag it wherever they like from there.
+        sectionOrder: [...state.sectionOrder, event.section.id],
+      ),
     );
   }
 
@@ -259,6 +266,14 @@ class CvBuilderBloc extends Bloc<CvBuilderEvent, CvBuilderState> {
           for (final section in state.customSections)
             if (section.id != event.sectionId) section,
         ],
+        sectionOrder: [
+          for (final key in state.sectionOrder)
+            if (key != event.sectionId) key,
+        ],
+        deactivatedSections: {
+          for (final key in state.deactivatedSections)
+            if (key != event.sectionId) key,
+        },
       ),
     );
   }
@@ -329,6 +344,22 @@ class CvBuilderBloc extends Bloc<CvBuilderEvent, CvBuilderState> {
     Emitter<CvBuilderState> emit,
   ) {
     emit(state.copyWith(templateId: event.templateId));
+  }
+
+  void _onSectionOrderChanged(
+    CvBuilderSectionOrderChanged event,
+    Emitter<CvBuilderState> emit,
+  ) {
+    emit(state.copyWith(sectionOrder: event.order));
+  }
+
+  void _onSectionActiveToggled(
+    CvBuilderSectionActiveToggled event,
+    Emitter<CvBuilderState> emit,
+  ) {
+    final next = Set<String>.of(state.deactivatedSections);
+    if (!next.remove(event.sectionKey)) next.add(event.sectionKey);
+    emit(state.copyWith(deactivatedSections: next));
   }
 
   @override

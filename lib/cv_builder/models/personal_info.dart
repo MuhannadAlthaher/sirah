@@ -1,5 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 /// The CV Builder's Step 1 answers.
-class PersonalInfo {
+class PersonalInfo extends Equatable {
   const PersonalInfo({
     this.firstName = '',
     this.lastName = '',
@@ -35,6 +37,47 @@ class PersonalInfo {
       phone.trim().isNotEmpty &&
       city.trim().isNotEmpty &&
       country.trim().isNotEmpty;
+
+  @override
+  List<Object?> get props => [
+    firstName,
+    lastName,
+    email,
+    phone,
+    city,
+    country,
+    dateOfBirth,
+    nationality,
+    hasDrivingLicense,
+  ];
+
+  Map<String, dynamic> toJson() => {
+    'firstName': firstName,
+    'lastName': lastName,
+    'email': email,
+    'phone': phone,
+    'city': city,
+    'country': country,
+    'dateOfBirth': dateOfBirth?.toIso8601String(),
+    'nationality': nationality,
+    'hasDrivingLicense': hasDrivingLicense,
+  };
+
+  factory PersonalInfo.fromJson(Map<String, dynamic> json) {
+    return PersonalInfo(
+      firstName: json['firstName'] as String? ?? '',
+      lastName: json['lastName'] as String? ?? '',
+      email: json['email'] as String? ?? '',
+      phone: json['phone'] as String? ?? '',
+      city: json['city'] as String? ?? '',
+      country: json['country'] as String? ?? '',
+      dateOfBirth: json['dateOfBirth'] == null
+          ? null
+          : DateTime.parse(json['dateOfBirth'] as String),
+      nationality: json['nationality'] as String? ?? '',
+      hasDrivingLicense: json['hasDrivingLicense'] as bool?,
+    );
+  }
 
   PersonalInfo copyWith({
     String? firstName,

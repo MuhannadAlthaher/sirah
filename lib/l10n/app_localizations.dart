@@ -57,15 +57,15 @@ class AppLocalizations {
   // stubs to aiBuilderComingSoon, same as every other AI action.
   String get aiBuilderDemoAiMessage1 => _text(
     en:
-        "Hi Alex — I'll interview you and write the CV as we go. First: "
+        "Hi Muhannad — I'll interview you and write the CV as we go. First: "
         'your name, city and the role you\'re aiming at?',
     ar:
-        'مرحباً أليكس — سأجري معك مقابلة وأكتب سيرتك الذاتية معك خطوة '
+        'مرحباً مهند — سأجري معك مقابلة وأكتب سيرتك الذاتية معك خطوة '
         'بخطوة. أولاً: اسمك ومدينتك والمنصب الذي تستهدفه؟',
   );
   String get aiBuilderDemoUserMessage1 => _text(
-    en: 'Alex Morgan · Riyadh · Senior Product Manager',
-    ar: 'أليكس مورغان · الرياض · مدير منتج أول',
+    en: 'Muhannad AlThaher · Riyadh · Senior Product Manager',
+    ar: 'مهند الظاهر · الرياض · مدير منتج أول',
   );
   String get aiBuilderDemoAiMessage2 => _text(
     en: 'Got it. Header written with a clean, parsable contact line.',
@@ -176,7 +176,7 @@ class AppLocalizations {
   String get atsScoreReport =>
       _text(en: 'ATS score report', ar: 'تقرير درجة ATS');
   String get recruiterReadyTemplates =>
-      _text(en: '5 recruiter-ready templates', ar: '5 قوالب جاهزة للتوظيف');
+      _text(en: '6 recruiter-ready templates', ar: '6 قوالب جاهزة للتوظيف');
 
   String get loginTitle => _text(
     en: 'Build a resume that gets you hired',
@@ -214,6 +214,11 @@ class AppLocalizations {
   String get createNewCv =>
       _text(en: 'Create New CV', ar: 'أنشئ سيرة ذاتية جديدة');
   String get myCvs => _text(en: 'My CVs', ar: 'سيرتي الذاتية');
+  String get noCvsYet => _text(en: 'No CVs yet', ar: 'لا توجد سير ذاتية بعد');
+  String get cvsEmptyMessage => _text(
+    en: 'Tap "Create New CV" above to build your first one.',
+    ar: 'اضغط على "أنشئ سيرة ذاتية جديدة" أعلاه لإنشاء أول سيرة ذاتية.',
+  );
   String get myCoverLetters =>
       _text(en: 'My Cover Letters', ar: 'خطابات التقديم');
   String get noCoverLettersYet =>
@@ -319,21 +324,34 @@ class AppLocalizations {
   String get sectionCompleteness =>
       _text(en: 'Section completeness', ar: 'اكتمال الأقسام');
   String get readability => _text(en: 'Readability', ar: 'سهولة القراءة');
+  String get scoreTipsHeader => _text(en: 'How to improve', ar: 'كيف تتحسن');
+  String get keywordMatchTip => _text(
+    en:
+        'Mirror 3-5 keywords from the job description in your summary and '
+        'experience bullets.',
+    ar: 'كرّر 3 إلى 5 كلمات مفتاحية من الوصف الوظيفي في ملخصك ونقاط خبرتك.',
+  );
+  String get formattingTip => _text(
+    en: 'Stick to standard section headings — avoid tables, columns, or icons.',
+    ar: 'التزم بعناوين الأقسام القياسية، وتجنّب الجداول والأعمدة والأيقونات.',
+  );
+  String get sectionCompletenessTip => _text(
+    en:
+        'Fill in every essential section on the CV Builder Hub to unlock '
+        'the full score.',
+    ar: 'أكمل كل الأقسام الأساسية في لوحة بناء السيرة للحصول على الدرجة الكاملة.',
+  );
+  String get readabilityTip => _text(
+    en:
+        'Keep bullets short and start each one with an action verb like '
+        '"Led" or "Built".',
+    ar: 'اجعل النقاط قصيرة وابدأ كل واحدة بفعل حركي مثل "قدت" أو "طوّرت".',
+  );
+  String get scoreImproveCta =>
+      _text(en: 'Improve this CV', ar: 'حسّن هذه السيرة');
 
-  String get demoUserName => _text(en: 'Alex Morgan', ar: 'أليكس مورغان');
+  String get demoUserName => _text(en: 'Muhannad AlThaher', ar: 'مهند الظاهر');
   String get demoUserPosition => _text(en: 'Project Manager', ar: 'مدير مشروع');
-  String get demoCvOneName =>
-      _text(en: 'Product Manager Resume', ar: 'سيرة مدير منتجات');
-  String get demoCvOneSubtitle =>
-      _text(en: 'Edited 2 days ago', ar: 'عُدلت قبل يومين');
-  String get demoCvTwoName =>
-      _text(en: 'Software Engineer CV', ar: 'سيرة مهندس برمجيات');
-  String get demoCvTwoSubtitle =>
-      _text(en: 'Edited 1 week ago', ar: 'عُدلت قبل أسبوع');
-  String get demoCvThreeName =>
-      _text(en: 'Marketing Specialist Resume', ar: 'سيرة أخصائي تسويق');
-  String get demoCvThreeSubtitle =>
-      _text(en: 'Edited 3 weeks ago', ar: 'عُدلت قبل 3 أسابيع');
 
   // --- CV Builder ---
   String cvStepOf(int step, int total) =>
@@ -551,6 +569,29 @@ class AppLocalizations {
   String get cvCustomSectionAddSection =>
       _text(en: 'Add a Section', ar: 'إضافة قسم');
 
+  String get cvTargetRolePageTitle =>
+      _text(en: "Let's get started", ar: 'لنبدأ');
+  String get cvTargetRolePageSubtitle => _text(
+    en: 'A couple of quick questions before we build your CV.',
+    ar: 'سؤالان سريعان قبل أن نبدأ في إنشاء سيرتك الذاتية.',
+  );
+  String get cvTargetRoleLabel => _text(
+    en: 'What role are you targeting?',
+    ar: 'ما الوظيفة التي تستهدفها؟',
+  );
+  String get cvTargetRoleHint =>
+      _text(en: 'e.g. Senior Product Manager', ar: 'مثال: مدير منتج أول');
+  String get cvLanguageQuestion => _text(
+    en: 'Which language do you want your CV in?',
+    ar: 'بأي لغة تريد سيرتك الذاتية؟',
+  );
+  String get cvLanguageArabic => _text(en: 'Arabic', ar: 'العربية');
+  String get cvLanguageEnglish => _text(en: 'English', ar: 'الإنجليزية');
+  String cvHubTargetRoleLabel(String role) => _text(
+    en: 'Building CV for: $role',
+    ar: 'تُبنى السيرة الذاتية لوظيفة: $role',
+  );
+
   String get cvHubTitle => _text(en: 'Build your CV', ar: 'أنشئ سيرتك الذاتية');
   String cvHubEssentialStepsLeft(int count) => count == 1
       ? _text(en: '1 essential step left', ar: 'خطوة أساسية واحدة متبقية')
@@ -649,6 +690,34 @@ class AppLocalizations {
   String cvDeleteMessage(String name) => _text(
     en: '"$name" will be deleted permanently. This can\'t be undone.',
     ar: 'سيتم حذف "$name" نهائيًا. لا يمكن التراجع عن هذا الإجراء.',
+  );
+
+  // --- CV export (PDF / Word) ---
+  String get cvExportPdf => _text(en: 'Export PDF', ar: 'تصدير PDF');
+  String get cvExportWord => _text(en: 'Export Word', ar: 'تصدير Word');
+  String get cvExportChooseFormat =>
+      _text(en: 'Export CV', ar: 'تصدير السيرة الذاتية');
+  String get cvExportPdfDescription => _text(
+    en: 'Best for applying — keeps the exact layout everywhere.',
+    ar: 'الأفضل للتقديم — يحافظ على التنسيق تمامًا في كل مكان.',
+  );
+  String get cvExportWordDescription => _text(
+    en: 'Editable in Word or Google Docs.',
+    ar: 'قابل للتعديل في Word أو مستندات Google.',
+  );
+
+  // --- Reorder / deactivate sections (Hub) ---
+  String get cvSectionDeactivate =>
+      _text(en: 'Deactivate', ar: 'إلغاء التفعيل');
+  String get cvSectionActivate => _text(en: 'Activate', ar: 'تفعيل');
+  String get cvSectionRemove => _text(en: 'Remove Section', ar: 'إزالة القسم');
+  String get cvSectionInactiveSubtitle => _text(
+    en: 'Inactive — hidden from CV',
+    ar: 'غير مُفعّل — مخفي عن السيرة الذاتية',
+  );
+  String get cvHubReorderableHeader => _text(
+    en: 'Drag to reorder — this is the order they appear on your CV',
+    ar: 'اسحب لإعادة الترتيب — هذا هو الترتيب الذي تظهر به في سيرتك الذاتية',
   );
 }
 

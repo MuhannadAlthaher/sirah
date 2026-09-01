@@ -1,7 +1,7 @@
+import 'package:sira/l10n/app_localizations.dart';
+
 // Country display names for the CV Builder's Country picker.
-// English-only — there's no locale-aware country-name data (CLDR) in
-// this app, so the picker's chrome is localized but these names
-// aren't. Alphabetical, no territories/dependencies.
+// Alphabetical (by English name), no territories/dependencies.
 // dart format off
 const List<String> kCountries = [
   'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola',
@@ -42,4 +42,96 @@ const List<String> kCountries = [
   'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam',
   'Yemen', 'Zambia', 'Zimbabwe',
 ];
+
+/// Arabic names, keyed by the canonical English name stored in
+/// [kCountries] (and in `PersonalInfo.country`) — the stored value
+/// always stays the English name for data stability; only the label
+/// shown to the user changes with locale (see [countryDisplayName]).
+const Map<String, String> _kCountryNamesAr = {
+  'Afghanistan': 'أفغانستان', 'Albania': 'ألبانيا', 'Algeria': 'الجزائر',
+  'Andorra': 'أندورا', 'Angola': 'أنغولا',
+  'Antigua and Barbuda': 'أنتيغوا وباربودا', 'Argentina': 'الأرجنتين',
+  'Armenia': 'أرمينيا', 'Australia': 'أستراليا', 'Austria': 'النمسا',
+  'Azerbaijan': 'أذربيجان', 'Bahamas': 'جزر البهاما', 'Bahrain': 'البحرين',
+  'Bangladesh': 'بنغلاديش', 'Barbados': 'باربادوس', 'Belarus': 'بيلاروسيا',
+  'Belgium': 'بلجيكا', 'Belize': 'بليز', 'Benin': 'بنين', 'Bhutan': 'بوتان',
+  'Bolivia': 'بوليفيا', 'Bosnia and Herzegovina': 'البوسنة والهرسك',
+  'Botswana': 'بوتسوانا', 'Brazil': 'البرازيل', 'Brunei': 'بروناي',
+  'Bulgaria': 'بلغاريا', 'Burkina Faso': 'بوركينا فاسو',
+  'Burundi': 'بوروندي', 'Cabo Verde': 'الرأس الأخضر', 'Cambodia': 'كمبوديا',
+  'Cameroon': 'الكاميرون', 'Canada': 'كندا',
+  'Central African Republic': 'جمهورية أفريقيا الوسطى', 'Chad': 'تشاد',
+  'Chile': 'تشيلي', 'China': 'الصين', 'Colombia': 'كولومبيا',
+  'Comoros': 'جزر القمر', 'Congo': 'الكونغو', 'Costa Rica': 'كوستاريكا',
+  'Croatia': 'كرواتيا', 'Cuba': 'كوبا', 'Cyprus': 'قبرص',
+  'Czechia': 'التشيك',
+  'Democratic Republic of the Congo': 'جمهورية الكونغو الديمقراطية',
+  'Denmark': 'الدنمارك', 'Djibouti': 'جيبوتي', 'Dominica': 'دومينيكا',
+  'Dominican Republic': 'جمهورية الدومينيكان', 'Ecuador': 'الإكوادور',
+  'Egypt': 'مصر', 'El Salvador': 'السلفادور',
+  'Equatorial Guinea': 'غينيا الاستوائية', 'Eritrea': 'إريتريا',
+  'Estonia': 'إستونيا', 'Eswatini': 'إسواتيني', 'Ethiopia': 'إثيوبيا',
+  'Fiji': 'فيجي', 'Finland': 'فنلندا', 'France': 'فرنسا',
+  'Gabon': 'الغابون', 'Gambia': 'غامبيا', 'Georgia': 'جورجيا',
+  'Germany': 'ألمانيا', 'Ghana': 'غانا', 'Greece': 'اليونان',
+  'Grenada': 'غرينادا', 'Guatemala': 'غواتيمالا', 'Guinea': 'غينيا',
+  'Guinea-Bissau': 'غينيا بيساو', 'Guyana': 'غيانا', 'Haiti': 'هايتي',
+  'Honduras': 'هندوراس', 'Hungary': 'المجر', 'Iceland': 'آيسلندا',
+  'India': 'الهند', 'Indonesia': 'إندونيسيا', 'Iran': 'إيران',
+  'Iraq': 'العراق', 'Ireland': 'أيرلندا', 'Israel': 'إسرائيل',
+  'Italy': 'إيطاليا', 'Jamaica': 'جامايكا', 'Japan': 'اليابان',
+  'Jordan': 'الأردن', 'Kazakhstan': 'كازاخستان', 'Kenya': 'كينيا',
+  'Kiribati': 'كيريباس', 'Kuwait': 'الكويت', 'Kyrgyzstan': 'قيرغيزستان',
+  'Laos': 'لاوس', 'Latvia': 'لاتفيا', 'Lebanon': 'لبنان',
+  'Lesotho': 'ليسوتو', 'Liberia': 'ليبيريا', 'Libya': 'ليبيا',
+  'Liechtenstein': 'ليختنشتاين', 'Lithuania': 'ليتوانيا',
+  'Luxembourg': 'لوكسمبورغ', 'Madagascar': 'مدغشقر', 'Malawi': 'مالاوي',
+  'Malaysia': 'ماليزيا', 'Maldives': 'جزر المالديف', 'Mali': 'مالي',
+  'Malta': 'مالطا', 'Marshall Islands': 'جزر مارشال',
+  'Mauritania': 'موريتانيا', 'Mauritius': 'موريشيوس', 'Mexico': 'المكسيك',
+  'Micronesia': 'ميكرونيزيا', 'Moldova': 'مولدوفا', 'Monaco': 'موناكو',
+  'Mongolia': 'منغوليا', 'Montenegro': 'الجبل الأسود', 'Morocco': 'المغرب',
+  'Mozambique': 'موزمبيق', 'Myanmar': 'ميانمار', 'Namibia': 'ناميبيا',
+  'Nauru': 'ناورو', 'Nepal': 'نيبال', 'Netherlands': 'هولندا',
+  'New Zealand': 'نيوزيلندا', 'Nicaragua': 'نيكاراغوا', 'Niger': 'النيجر',
+  'Nigeria': 'نيجيريا', 'North Korea': 'كوريا الشمالية',
+  'North Macedonia': 'مقدونيا الشمالية', 'Norway': 'النرويج', 'Oman': 'عمان',
+  'Pakistan': 'باكستان', 'Palau': 'بالاو', 'Palestine': 'فلسطين',
+  'Panama': 'بنما', 'Papua New Guinea': 'بابوا غينيا الجديدة',
+  'Paraguay': 'باراغواي', 'Peru': 'بيرو', 'Philippines': 'الفلبين',
+  'Poland': 'بولندا', 'Portugal': 'البرتغال', 'Qatar': 'قطر',
+  'Romania': 'رومانيا', 'Russia': 'روسيا', 'Rwanda': 'رواندا',
+  'Saint Kitts and Nevis': 'سانت كيتس ونيفيس',
+  'Saint Lucia': 'سانت لوسيا',
+  'Saint Vincent and the Grenadines': 'سانت فينسنت والغرينادين',
+  'Samoa': 'ساموا', 'San Marino': 'سان مارينو',
+  'Sao Tome and Principe': 'ساو تومي وبرينسيبي',
+  'Saudi Arabia': 'المملكة العربية السعودية', 'Senegal': 'السنغال',
+  'Serbia': 'صربيا', 'Seychelles': 'سيشل', 'Sierra Leone': 'سيراليون',
+  'Singapore': 'سنغافورة', 'Slovakia': 'سلوفاكيا', 'Slovenia': 'سلوفينيا',
+  'Solomon Islands': 'جزر سليمان', 'Somalia': 'الصومال',
+  'South Africa': 'جنوب أفريقيا', 'South Korea': 'كوريا الجنوبية',
+  'South Sudan': 'جنوب السودان', 'Spain': 'إسبانيا',
+  'Sri Lanka': 'سريلانكا', 'Sudan': 'السودان', 'Suriname': 'سورينام',
+  'Sweden': 'السويد', 'Switzerland': 'سويسرا', 'Syria': 'سوريا',
+  'Taiwan': 'تايوان', 'Tajikistan': 'طاجيكستان', 'Tanzania': 'تنزانيا',
+  'Thailand': 'تايلاند', 'Timor-Leste': 'تيمور الشرقية', 'Togo': 'توغو',
+  'Tonga': 'تونغا', 'Trinidad and Tobago': 'ترينيداد وتوباغو',
+  'Tunisia': 'تونس', 'Turkey': 'تركيا', 'Turkmenistan': 'تركمانستان',
+  'Tuvalu': 'توفالو', 'Uganda': 'أوغندا', 'Ukraine': 'أوكرانيا',
+  'United Arab Emirates': 'الإمارات العربية المتحدة',
+  'United Kingdom': 'المملكة المتحدة', 'United States': 'الولايات المتحدة',
+  'Uruguay': 'أوروغواي', 'Uzbekistan': 'أوزبكستان', 'Vanuatu': 'فانواتو',
+  'Vatican City': 'الفاتيكان', 'Venezuela': 'فنزويلا', 'Vietnam': 'فيتنام',
+  'Yemen': 'اليمن', 'Zambia': 'زامبيا', 'Zimbabwe': 'زيمبابوي',
+};
 // dart format on
+
+/// The label to show for a country stored under its canonical English
+/// name (as in [kCountries]) — translated when the app is in Arabic,
+/// unchanged otherwise. The stored/returned value from the picker is
+/// always the English name; only this display label is localized.
+String countryDisplayName(String englishName, AppLocalizations l10n) {
+  if (!l10n.isArabic) return englishName;
+  return _kCountryNamesAr[englishName] ?? englishName;
+}

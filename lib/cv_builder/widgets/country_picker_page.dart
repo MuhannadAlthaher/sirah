@@ -49,13 +49,25 @@ class CountryPickerPage extends StatelessWidget {
                   child: ValueListenableBuilder<String>(
                     valueListenable: _query,
                     builder: (context, query, _) {
-                      final matches = kCountries
-                          .where(
-                            (country) => country.toLowerCase().contains(
-                              query.trim().toLowerCase(),
-                            ),
-                          )
-                          .toList();
+                      final trimmedQuery = query.trim().toLowerCase();
+                      final matches =
+                          kCountries.where((country) {
+                            final displayName = countryDisplayName(
+                              country,
+                              l10n,
+                            );
+                            return country.toLowerCase().contains(
+                                  trimmedQuery,
+                                ) ||
+                                displayName.toLowerCase().contains(
+                                  trimmedQuery,
+                                );
+                          }).toList()..sort(
+                            (a, b) => countryDisplayName(
+                              a,
+                              l10n,
+                            ).compareTo(countryDisplayName(b, l10n)),
+                          );
 
                       if (matches.isEmpty) {
                         return Center(
@@ -74,7 +86,7 @@ class CountryPickerPage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final country = matches[index];
                           return ListTile(
-                            title: Text(country),
+                            title: Text(countryDisplayName(country, l10n)),
                             onTap: () => Navigator.of(context).pop(country),
                           );
                         },

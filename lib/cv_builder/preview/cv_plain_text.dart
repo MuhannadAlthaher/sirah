@@ -1,4 +1,5 @@
 import 'package:sira/cv_builder/bloc/cv_builder_state.dart';
+import 'package:sira/cv_builder/data/countries.dart';
 import 'package:sira/cv_builder/widgets/rich_text_field.dart';
 import 'package:sira/l10n/app_localizations.dart';
 
@@ -14,7 +15,7 @@ String cvPlainText(AppLocalizations l10n, CvBuilderState state) {
 
   final location = [
     info.city,
-    info.country,
+    if (info.country.trim().isNotEmpty) countryDisplayName(info.country, l10n),
   ].where((s) => s.trim().isNotEmpty).join(', ');
   final contact = [
     info.email,

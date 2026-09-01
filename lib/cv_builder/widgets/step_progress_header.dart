@@ -103,11 +103,19 @@ class StepProgressHeader extends StatelessWidget {
               SizedBox(height: padding * 0.5),
               ClipRRect(
                 borderRadius: BorderRadius.circular(padding),
-                child: LinearProgressIndicator(
-                  value: (stepIndex + 1) / stepCount,
-                  minHeight: padding * 0.2,
-                  backgroundColor: context.palette.placeholder,
-                  color: context.palette.accent,
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween<double>(
+                    begin: 0,
+                    end: (stepIndex + 1) / stepCount,
+                  ),
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                  builder: (context, value, _) => LinearProgressIndicator(
+                    value: value,
+                    minHeight: padding * 0.2,
+                    backgroundColor: context.palette.placeholder,
+                    color: context.palette.accent,
+                  ),
                 ),
               ),
               SizedBox(height: padding * 0.6),

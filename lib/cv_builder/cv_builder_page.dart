@@ -92,37 +92,57 @@ class _CvBuilderView extends StatelessWidget {
     return Scaffold(
       backgroundColor: context.palette.screenBackground,
       body: SafeArea(
-        child: Column(
-          children: [
-            BlocSelector<CvBuilderBloc, CvBuilderState, int>(
-              selector: (state) => state.currentStep,
-              builder: (context, currentStep) => StepProgressHeader(
-                stepIndex: currentStep,
-                stepCount: CvBuilderState.stepCount,
-                title: titles[currentStep],
-                onClose: () => _returnToHub(context),
-                onBack: currentStep == 0
-                    ? null
-                    : () => bloc.add(const CvBuilderPreviousStepRequested()),
-                onPreview: () => _openPreview(context),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Capped the same way every other screen caps its content
+            // width — without it, the header (sized off its own raw
+            // width) blows up into oversized icons and padding on
+            // tablets/desktop/web.
+            final width = constraints.maxWidth.clamp(0, 480).toDouble();
+
+            return Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                width: width,
+                height: constraints.maxHeight,
+                child: Column(
+                  children: [
+                    BlocSelector<CvBuilderBloc, CvBuilderState, int>(
+                      selector: (state) => state.currentStep,
+                      builder: (context, currentStep) => StepProgressHeader(
+                        stepIndex: currentStep,
+                        stepCount: CvBuilderState.stepCount,
+                        title: titles[currentStep],
+                        onClose: () => _returnToHub(context),
+                        onBack: currentStep == 0
+                            ? null
+                            : () => bloc.add(
+                                const CvBuilderPreviousStepRequested(),
+                              ),
+                        onPreview: () => _openPreview(context),
+                      ),
+                    ),
+                    Expanded(
+                      child: PageView(
+                        controller: bloc.pageController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        onPageChanged: (index) =>
+                            bloc.add(CvBuilderStepChanged(index)),
+                        children: [
+                          const PersonalInfoStep(),
+                          const ExperienceStep(),
+                          const EducationStep(),
+                          const SkillsStep(),
+                          const CertificationsStep(),
+                          SummaryStep(onDone: () => _returnToHub(context)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: PageView(
-                controller: bloc.pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (index) => bloc.add(CvBuilderStepChanged(index)),
-                children: [
-                  const PersonalInfoStep(),
-                  const ExperienceStep(),
-                  const EducationStep(),
-                  const SkillsStep(),
-                  const CertificationsStep(),
-                  SummaryStep(onDone: () => _returnToHub(context)),
-                ],
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

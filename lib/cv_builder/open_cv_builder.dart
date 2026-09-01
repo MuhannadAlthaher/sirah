@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sira/cv_builder/bloc/cv_builder_state.dart';
 import 'package:sira/cv_builder/cv_builder_hub_page.dart';
+import 'package:sira/cv_builder/cv_target_role_page.dart';
 import 'package:sira/cv_builder/models/cv_template.dart';
 import 'package:sira/cv_builder/template_picker/cv_template_picker_page.dart';
 import 'package:sira/dashboard/bloc/dashboard_bloc.dart';
 import 'package:sira/dashboard/bloc/dashboard_event.dart';
 import 'package:sira/data/demo_data.dart';
 import 'package:sira/l10n/app_localizations.dart';
+import 'package:sira/l10n/bloc/app_locale_bloc.dart';
+import 'package:sira/l10n/bloc/app_locale_event.dart';
 
 /// Pushes [CvBuilderHubPage] — fresh, resuming [resumeFrom], or
 /// editing the already-existing CV named by [editingCvId] — and turns
@@ -16,11 +19,12 @@ import 'package:sira/l10n/app_localizations.dart';
 /// draft banner, and a CV card's Edit action) don't duplicate this
 /// handling.
 ///
-/// A brand-new CV starts with `CvTemplatePickerPage` — canceling it
-/// (back/close) aborts opening the builder at all, so declining a
-/// template never leaves a stray empty draft behind. Resuming a draft
-/// or editing an existing CV both skip the picker: either already
-/// carries the template it was started with.
+/// A brand-new CV starts with [CvTargetRolePage] (target role + CV
+/// language) and then `CvTemplatePickerPage` — canceling either
+/// (back/close) aborts opening the builder at all, so declining
+/// either never leaves a stray empty draft behind. Resuming a draft
+/// or editing an existing CV both skip straight to the Hub: either
+/// already carries the template and answers it was started with.
 ///
 /// [editingCvId] set means [resumeFrom] is an already-completed CV's
 /// data, not the singular in-progress draft — so both a finish and a
@@ -44,11 +48,24 @@ Future<void> openCvBuilder(
       bloc.add(const DashboardCvDraftResumed());
     }
   } else {
+    final answer = await Navigator.of(context).push<CvTargetRoleAnswer>(
+      MaterialPageRoute(builder: (_) => CvTargetRolePage()),
+    );
+    if (answer == null || !context.mounted) return;
+
+    final localeBloc = context.read<AppLocaleBloc>();
+    if (localeBloc.state.locale?.languageCode != answer.locale.languageCode) {
+      localeBloc.add(AppLocaleChanged(answer.locale));
+    }
+
     final templateId = await Navigator.of(context).push<CvTemplateId>(
       MaterialPageRoute(builder: (_) => const CvTemplatePickerPage()),
     );
     if (templateId == null || !context.mounted) return;
-    initialState = CvBuilderState.initial().copyWith(templateId: templateId);
+    initialState = CvBuilderState.initial().copyWith(
+      templateId: templateId,
+      targetRole: answer.targetRole,
+    );
   }
 
   final result = await Navigator.of(context).push<CvBuilderResult>(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sira/cv_builder/bloc/cv_builder_state.dart';
+import 'package:sira/cv_builder/export/cv_export_actions.dart';
 import 'package:sira/cv_builder/models/cv_template.dart';
 import 'package:sira/cv_builder/paywall/watermark_gate.dart';
 import 'package:sira/cv_builder/preview/cv_renderer.dart';
@@ -37,6 +38,12 @@ class CvPreviewPage extends StatefulWidget {
   @override
   State<CvPreviewPage> createState() => _CvPreviewPageState();
 }
+
+/// A4's own width:height ratio — the preview page is sized against
+/// this (not just clamped to a max width) so a short CV still renders
+/// as a full page instead of shrinking down to hug its own content,
+/// with the rest of the screen left as bare gray background.
+const _kA4AspectRatio = 210 / 297;
 
 class _CvPreviewPageState extends State<CvPreviewPage> {
   late CvTemplateId _templateId = widget.state.templateId;
@@ -103,6 +110,7 @@ class _CvPreviewPageState extends State<CvPreviewPage> {
                   final pageWidth = constraints.maxWidth
                       .clamp(0, 720)
                       .toDouble();
+                  final pageHeight = pageWidth / _kA4AspectRatio;
 
                   return SingleChildScrollView(
                     padding: const EdgeInsets.all(16),
@@ -122,9 +130,14 @@ class _CvPreviewPageState extends State<CvPreviewPage> {
                           child: ClipRect(
                             child: Stack(
                               children: [
-                                CvRenderer(
-                                  state: widget.state,
-                                  templateId: _templateId,
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    minHeight: pageHeight,
+                                  ),
+                                  child: CvRenderer(
+                                    state: widget.state,
+                                    templateId: _templateId,
+                                  ),
                                 ),
                                 if (!_watermarkRemoved)
                                   Positioned.fill(
@@ -148,6 +161,52 @@ class _CvPreviewPageState extends State<CvPreviewPage> {
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
               child: Column(
                 children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () => exportCvAsPdf(
+                            context,
+                            state: widget.state,
+                            templateId: _templateId,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: context.palette.textPrimary,
+                            side: BorderSide(color: context.palette.border),
+                            shape: const StadiumBorder(),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          icon: const Icon(
+                            Icons.picture_as_pdf_outlined,
+                            size: 18,
+                          ),
+                          label: Text(l10n.cvExportPdf),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () => exportCvAsWord(
+                            context,
+                            state: widget.state,
+                            templateId: _templateId,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: context.palette.textPrimary,
+                            side: BorderSide(color: context.palette.border),
+                            shape: const StadiumBorder(),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          icon: const Icon(
+                            Icons.description_outlined,
+                            size: 18,
+                          ),
+                          label: Text(l10n.cvExportWord),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
                   if (!_watermarkRemoved) ...[
                     OutlinedButton(
                       onPressed: () => showWatermarkPaywallSheet(context),

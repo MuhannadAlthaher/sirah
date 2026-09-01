@@ -1,25 +1,26 @@
+import 'package:equatable/equatable.dart';
 import 'package:sira/cv_builder/bloc/cv_builder_state.dart';
 import 'package:sira/l10n/app_localizations.dart';
 
 /// The signed-in user, shown across the dashboard/profile/score
 /// screens. Demo data for now — swap for the real profile once auth
 /// is wired up.
-class DemoUser {
+class DemoUser extends Equatable {
   const DemoUser({required this.name, required this.position});
 
   final String name;
   final String position;
+
+  @override
+  List<Object?> get props => [name, position];
 }
 
-/// One CV entry shown on the dashboard. Demo data for now — swap for
-/// the user's real saved CVs once the builder/backend exists.
-///
-/// [builderState] is null for the seeded sample cards (there's no real
-/// content behind them, so Edit/Preview/Share fall back to a "coming
-/// soon" placeholder) and set for any CV actually produced by the CV
-/// Builder — that's what lets Edit reopen it with its real answers,
-/// and Preview/Share render its real content.
-class DemoCv {
+/// One CV entry shown on the dashboard — always backed by a real
+/// [builderState] produced by the CV Builder (there's no seeded/dummy
+/// data anymore; "My CVs" starts empty until the user actually
+/// creates one). Persisted on-device via `CvStorage` so it survives
+/// an app restart.
+class DemoCv extends Equatable {
   const DemoCv({
     required this.id,
     required this.name,
@@ -31,6 +32,9 @@ class DemoCv {
   final String name;
   final String subtitle;
   final CvBuilderState? builderState;
+
+  @override
+  List<Object?> get props => [id, name, subtitle, builderState];
 
   DemoCv copyWith({
     String? name,
@@ -44,6 +48,26 @@ class DemoCv {
       builderState: builderState ?? this.builderState,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'subtitle': subtitle,
+    'builderState': builderState?.toJson(),
+  };
+
+  factory DemoCv.fromJson(Map<String, dynamic> json) {
+    return DemoCv(
+      id: json['id'] as String,
+      name: json['name'] as String? ?? '',
+      subtitle: json['subtitle'] as String? ?? '',
+      builderState: json['builderState'] == null
+          ? null
+          : CvBuilderState.fromJson(
+              json['builderState'] as Map<String, dynamic>,
+            ),
+    );
+  }
 }
 
 DemoUser demoUserFor(AppLocalizations l10n) =>
@@ -53,21 +77,3 @@ DemoUser demoUserFor(AppLocalizations l10n) =>
 /// Demo data for now — swap for the real computed score once ATS
 /// scoring exists.
 const demoAtsScore = 87;
-
-List<DemoCv> demoCvsFor(AppLocalizations l10n) => [
-  DemoCv(
-    id: 'cv-1',
-    name: l10n.demoCvOneName,
-    subtitle: l10n.demoCvOneSubtitle,
-  ),
-  DemoCv(
-    id: 'cv-2',
-    name: l10n.demoCvTwoName,
-    subtitle: l10n.demoCvTwoSubtitle,
-  ),
-  DemoCv(
-    id: 'cv-3',
-    name: l10n.demoCvThreeName,
-    subtitle: l10n.demoCvThreeSubtitle,
-  ),
-];

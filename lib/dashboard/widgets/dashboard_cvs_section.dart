@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:sira/cv_builder/export/cv_export_actions.dart';
+import 'package:sira/cv_builder/export/cv_export_sheet.dart';
 import 'package:sira/cv_builder/open_cv_builder.dart';
-import 'package:sira/cv_builder/preview/cv_plain_text.dart';
 import 'package:sira/dashboard/bloc/dashboard_bloc.dart';
 import 'package:sira/dashboard/bloc/dashboard_event.dart';
 import 'package:sira/dashboard/bloc/dashboard_state.dart';
 import 'package:sira/dashboard/widgets/collapsible_section_header.dart';
 import 'package:sira/dashboard/widgets/cv_card.dart';
 import 'package:sira/dashboard/widgets/delete_cv_dialog.dart';
+import 'package:sira/dashboard/widgets/empty_section_placeholder.dart';
 import 'package:sira/dashboard/widgets/expand_collapse.dart';
 import 'package:sira/data/demo_data.dart';
 import 'package:sira/l10n/app_localizations.dart';
@@ -35,12 +36,31 @@ class DashboardCvsSection extends StatelessWidget {
   void _handleShare(BuildContext context, AppLocalizations l10n, DemoCv cv) {
     final builderState = cv.builderState;
     if (builderState != null) {
-      SharePlus.instance.share(
-        ShareParams(text: cvPlainText(l10n, builderState), subject: cv.name),
+      // A real, formatted PDF file — not the plain-text summary this
+      // used to share, which lost the CV's actual layout entirely.
+      shareCvAsPdf(
+        context,
+        state: builderState,
+        templateId: builderState.templateId,
       );
     } else {
       context.read<DashboardBloc>().add(
         DashboardPlaceholderActionRequested(l10n.shareCv(cv.name)),
+      );
+    }
+  }
+
+  void _handleDownload(BuildContext context, AppLocalizations l10n, DemoCv cv) {
+    final builderState = cv.builderState;
+    if (builderState != null) {
+      showCvExportSheet(
+        context,
+        state: builderState,
+        templateId: builderState.templateId,
+      );
+    } else {
+      context.read<DashboardBloc>().add(
+        DashboardPlaceholderActionRequested(l10n.downloadCv(cv.name)),
       );
     }
   }
@@ -79,41 +99,45 @@ class DashboardCvsSection extends StatelessWidget {
               expanded: state.cvsExpanded,
               child: Padding(
                 padding: EdgeInsets.only(top: padding * 0.6),
-                // The `width` prop is the section's nominal width before
-                // the parent scroll view's horizontal padding is
-                // subtracted, so tile sizing is measured here instead —
-                // off the space actually available to the Wrap — rather
-                // than off `width` directly, which would overshoot it.
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final tileWidth =
-                        (constraints.maxWidth - padding * 0.6) / 2;
+                child: state.cvs.isEmpty
+                    ? EmptySectionPlaceholder(
+                        title: l10n.noCvsYet,
+                        message: l10n.cvsEmptyMessage,
+                      )
+                    // The `width` prop is the section's nominal width
+                    // before the parent scroll view's horizontal padding
+                    // is subtracted, so tile sizing is measured here
+                    // instead — off the space actually available to the
+                    // Wrap — rather than off `width` directly, which
+                    // would overshoot it.
+                    : LayoutBuilder(
+                        builder: (context, constraints) {
+                          final tileWidth =
+                              (constraints.maxWidth - padding * 0.6) / 2;
 
-                    return Wrap(
-                      spacing: padding * 0.6,
-                      runSpacing: padding * 0.6,
-                      children: [
-                        for (final cv in state.cvs)
-                          SizedBox(
-                            width: tileWidth,
-                            child: CvCard(
-                              cv: cv,
-                              width: tileWidth,
-                              onEdit: () => _handleEdit(context, l10n, cv),
-                              onDownload: () =>
-                                  context.read<DashboardBloc>().add(
-                                    DashboardPlaceholderActionRequested(
-                                      l10n.downloadCv(cv.name),
-                                    ),
+                          return Wrap(
+                            spacing: padding * 0.6,
+                            runSpacing: padding * 0.6,
+                            children: [
+                              for (final cv in state.cvs)
+                                SizedBox(
+                                  width: tileWidth,
+                                  child: CvCard(
+                                    cv: cv,
+                                    width: tileWidth,
+                                    onEdit: () =>
+                                        _handleEdit(context, l10n, cv),
+                                    onDownload: () =>
+                                        _handleDownload(context, l10n, cv),
+                                    onShare: () =>
+                                        _handleShare(context, l10n, cv),
+                                    onDelete: () => _handleDelete(context, cv),
                                   ),
-                              onShare: () => _handleShare(context, l10n, cv),
-                              onDelete: () => _handleDelete(context, cv),
-                            ),
-                          ),
-                      ],
-                    );
-                  },
-                ),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
               ),
             );
           },

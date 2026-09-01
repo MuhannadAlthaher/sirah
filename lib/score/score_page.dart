@@ -63,10 +63,11 @@ class ScorePage extends StatelessWidget {
                       ),
                       SizedBox(height: padding * 0.6),
                       for (var i = 0; i < breakdown.length; i++) ...[
-                        if (i != 0) SizedBox(height: padding * 0.7),
+                        if (i != 0) SizedBox(height: padding * 0.9),
                         ScoreBreakdownRow(
                           label: breakdown[i].label,
                           score: breakdown[i].score,
+                          tip: breakdown[i].isStrong ? null : breakdown[i].tip,
                         ),
                       ],
                     ],

@@ -29,10 +29,12 @@ class RichTextFullScreenPage extends StatefulWidget {
 
 class _RichTextFullScreenPageState extends State<RichTextFullScreenPage> {
   final FocusNode _focusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
     _focusNode.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -86,7 +88,7 @@ class _RichTextFullScreenPageState extends State<RichTextFullScreenPage> {
                 child: QuillEditor(
                   controller: widget.controller,
                   focusNode: _focusNode,
-                  scrollController: ScrollController(),
+                  scrollController: _scrollController,
                   config: QuillEditorConfig(
                     placeholder: widget.placeholder,
                     padding: EdgeInsets.zero,
